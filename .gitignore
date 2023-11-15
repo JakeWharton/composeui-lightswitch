@@ -1,0 +1,9 @@
+# Gradle
+.gradle
+build
+
+# IntelliJ IDEA
+.idea
+
+# Temporary dir used by pull_includes.sh
+usr/downloads
