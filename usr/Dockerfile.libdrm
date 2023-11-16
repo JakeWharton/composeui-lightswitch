@@ -1,0 +1,24 @@
+FROM debian
+
+RUN : \
+  && apt-get update \
+  && apt-get install -y \
+       wget \
+       make \
+       gcc \
+  && rm -rf /var/lib/apt/lists/* \
+  ;
+
+RUN : \
+  && wget "https://dri.freedesktop.org/libdrm/libdrm-2.4.87.tar.gz" \
+  && tar -xf libdrm-* \
+  && rm libdrm-*.tar.* \
+  ;
+
+RUN : \
+  && cd libdrm-* \
+  && ./configure \
+  && make \
+       install-libdrmincludeHEADERS \
+       install-klibdrmincludeHEADERS \
+  ;

@@ -34,10 +34,19 @@ echo "Downloading xkbcommon…"
 
 xkbcommon_version="0.7.0"
 curl -L --no-progress-meter "http://xkbcommon.org/download/libxkbcommon-$xkbcommon_version.tar.xz" > "libxkbcommon-$xkbcommon_version.tar.xz"
-tar -xzf "libxkbcommon-$xkbcommon_version.tar.xz"
+tar -xf "libxkbcommon-$xkbcommon_version.tar.xz"
 rm "libxkbcommon-$xkbcommon_version.tar.xz"
 cp -r "libxkbcommon-$xkbcommon_version/xkbcommon" ../include
 rm -r "libxkbcommon-$xkbcommon_version"
+
+echo "Downloading libinput…"
+
+libinput_version="1.8.2"
+curl -L --no-progress-meter "https://www.freedesktop.org/software/libinput/libinput-$libinput_version.tar.xz" > "libinput-$libinput_version.tar.xz"
+tar -xf "libinput-$libinput_version.tar.xz"
+rm "libinput-$libinput_version.tar.xz"
+cp "libinput-$libinput_version/include/linux/input.h" ../include
+rm -r "libinput-$libinput_version"
 
 popd > /dev/null
 rmdir usr/downloads
@@ -48,5 +57,12 @@ wayland_image=$(podman build -qf usr/Dockerfile.wayland)
 wayland_container=$(podman run -d $wayland_image)
 podman cp $wayland_container:/usr/local/include usr
 podman rm $wayland_container > /dev/null
+
+echo "Downloading libdrm…"
+
+libdrm_image=$(podman build -qf usr/Dockerfile.libdrm)
+libdrm_container=$(podman run -d $libdrm_image)
+podman cp $libdrm_container:/usr/local/include usr
+podman rm $libdrm_container > /dev/null
 
 echo "Done"

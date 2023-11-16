@@ -17,19 +17,25 @@ kotlin {
 			// Work around https://youtrack.jetbrains.com/issue/KT-48082.
 			linkerOpts(
 				"-L${file("usr/lib").absolutePath}",
-				"-lwayland-client",
+				"-ldrm",
+				// Do not check for symbols within our shared libraries.
+				"--allow-shlib-undefined",
 			)
 		}
 		compilations.main.cinterops {
-			create("wayland") {
-				packageName("wayland")
-				includeDirs("usr/include")
-				header("usr/include/wayland-client.h")
+			create("lightswitch") {
+				packageName("lightswitch")
+				includeDirs(
+					"usr/include",
+					"usr/include/libdrm",
+				)
+				header("usr/include/xf86drmMode.h")
 			}
 		}
 	}
 
 	sourceSets.configureEach {
+		languageSettings.optIn("kotlin.ExperimentalStdlibApi")
 		languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")
 	}
 }

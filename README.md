@@ -25,36 +25,6 @@ If your device updated past version 4.0.0, there are steps (which are not for th
 to attach a keyboard to re-obtain root. See https://community.home-assistant.io/t/500842/19.
 
 
-## Native libraries
-
-The device ships with the following native libraries:
-
-* `libweston-8` version unknown, probably 8.0.0
-
-  Weston is not ABI stable, so they change the `.so` name with each release. Since this is "weston-8"
-  we safely can assume it's 8.0.0. There were no other 8.x.x releases.
-
-* `libpixman` version 0.34.0
-
-* `libxkbcommon` version unknown, probably 0.7.0
-
-  Weston 8 requires at least xkbcommon 0.3.0. Running `strings` on the `.so` shows a "0.7.0" string.
-  New APIs in 0.8.0 are not present via `strings`. 0.7.2 introduced new keys which are not present in
-  `strings`. So it's either 0.7.1 or 0.7.0, but we have no way of differentiating without testing for
-  0.7.1's bugfixes which I'm too lazy to do.
-
-* `libwayland-client` version unknown, probably 1.18.0
-
-  Weston 8 requires at least wayland 1.17.0. In 1.18.0 Wayland added a `wl_global_remove` function
-  which appears in `strings`.
-
-The headers for these versions are checked in under `usr/include/`.
-These were obtained by running the `pull_includes.sh` script (which you should not need to do).
-
-The shared libraries for dynamic linking are checked in under `usr/lib/`.
-These were obtained by running the `pull_libs.sh` script (which you should not need to do).
-
-
 ## Connection
 
 The device is running an ADB server as root. Locate its IP address after connecting it to
