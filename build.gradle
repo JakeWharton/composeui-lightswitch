@@ -36,6 +36,7 @@ kotlin {
 
 	sourceSets.configureEach {
 		languageSettings.optIn("kotlin.ExperimentalStdlibApi")
+		languageSettings.optIn("kotlin.contracts.ExperimentalContracts")
 		languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")
 	}
 }
