@@ -1,8 +1,13 @@
 import kotlinx.cinterop.CValue
+import kotlinx.cinterop.alloc
+import kotlinx.cinterop.cValuesOf
 import kotlinx.cinterop.get
+import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.pointed
+import kotlinx.cinterop.ptr
 import kotlinx.cinterop.readValue
 import kotlinx.cinterop.useContents
+import kotlinx.cinterop.value
 import lightswitch.DRM_MODE_CONNECTED
 import lightswitch.drmModeConnectorPtr
 import lightswitch.drmModeCrtcPtr
@@ -17,11 +22,13 @@ import lightswitch.drmModeGetEncoder
 import lightswitch.drmModeGetResources
 import lightswitch.drmModeModeInfo
 import lightswitch.drmModeResPtr
+import lightswitch.drmModeSetCrtc
 import platform.posix.O_CLOEXEC
 import platform.posix.O_RDWR
 import platform.posix.close
 import platform.posix.open
 import platform.posix.uint32_t
+import platform.posix.uint32_tVar
 
 internal class NativeWindowDrm private constructor(
 	val deviceFd: Int,
@@ -40,7 +47,7 @@ internal class NativeWindowDrm private constructor(
 				println("Closing DRM device")
 				close(deviceFd)
 			}
-			println("Got DRM device $deviceFd")
+			println("Opened DRM device $deviceFd")
 
 			val connectorId: uint32_t
 			val modeInfo: CValue<drmModeModeInfo>
@@ -91,6 +98,17 @@ internal class NativeWindowDrm private constructor(
 			}
 			closer += {
 				println("Freeing CRTC")
+				val crtc = crtcPtr.pointed
+				drmModeSetCrtc(
+					fd = deviceFd,
+					crtcId = crtc.crtc_id,
+					bufferId = crtc.buffer_id,
+					x = crtc.x,
+					y = crtc.y,
+					connectors = cValuesOf(connectorId),
+					count = 1,
+					mode = crtc.mode.ptr,
+				)
 				drmModeFreeCrtc(crtcPtr)
 			}
 			println("Got CRTC for ID $crtcId")

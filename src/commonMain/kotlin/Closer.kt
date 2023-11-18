@@ -87,7 +87,9 @@ internal class Closer : AutoCloseable {
 	}
 }
 
-internal class CloserScope(val closer: Closer)
+internal class CloserScope(val closer: Closer) {
+	fun <R : AutoCloseable> R.useInScope(): R = also(closer::plusAssign)
+}
 
 /**
  * Create a child [Closer] which will be closed whether [block] returns successfully

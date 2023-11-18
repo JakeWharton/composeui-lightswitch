@@ -18,6 +18,7 @@ kotlin {
 			linkerOpts(
 				"-L${file("usr/lib").absolutePath}",
 				"-ldrm",
+				"-lmali",
 				// Do not check for symbols within our shared libraries.
 				"--allow-shlib-undefined",
 			)
@@ -29,6 +30,7 @@ kotlin {
 					"usr/include",
 					"usr/include/libdrm",
 				)
+				header("usr/include/gbm.h")
 				header("usr/include/xf86drmMode.h")
 			}
 		}

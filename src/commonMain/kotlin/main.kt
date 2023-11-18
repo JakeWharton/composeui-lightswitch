@@ -5,9 +5,13 @@ private const val devicePath = "/dev/dri/card0"
 fun main() {
 	println("Hello!")
 
-	NativeWindowDrm.initialize(devicePath).use {
-		it.modeInfo.useContents {
+	NativeWindowDrmGbm.initialize(devicePath).use { window ->
+		window.nativeWindowDrm.modeInfo.useContents {
 			println("Resolution: ${vdisplay}x$hdisplay")
+		}
+		repeat(5) {
+			println("Swappin' buffers")
+			window.swapBuffers()
 		}
 	}
 

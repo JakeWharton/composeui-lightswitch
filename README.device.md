@@ -61,6 +61,7 @@ The device ships with the following native libraries:
 
   The 2.4.x series has been going on for 15 years so that's a safe bet, but what patch version?
   I started bisecting the public symbols, but it wasn't yielding good results. I guessed .87 for now.
+  In .98 they added a `drmIsMaster` API which is not available, so it's definitely older than that.
 
 The headers for these versions are checked in under `usr/include/`.
 These were obtained by running the `pull_includes.sh` script (which you should not need to do).
