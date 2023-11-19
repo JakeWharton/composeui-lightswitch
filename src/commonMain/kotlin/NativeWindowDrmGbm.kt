@@ -35,7 +35,7 @@ internal class NativeWindowDrmGbm(
 	private val closer: Closer,
 ) : AutoCloseable by closer {
 	private var previousBo: CPointer<gbm_bo>? = null
-	private var previousFb: uint32_t = 0.convert()
+	private var previousFb: uint32_t = 0U
 
 	fun swapBuffers() = memScoped {
 		val bo = gbm_surface_lock_front_buffer(onscreenSurface)
@@ -49,8 +49,8 @@ internal class NativeWindowDrmGbm(
 			fd = nativeWindowDrm.deviceFd,
 			width = width,
 			height = height,
-			depth = 24.convert(),
-			bpp = 32.convert(),
+			depth = 24U,
+			bpp = 32U,
 			pitch = stride,
 			bo_handle = handle,
 			buf_id = fb.ptr,
@@ -64,8 +64,8 @@ internal class NativeWindowDrmGbm(
 			fd = nativeWindowDrm.deviceFd,
 			crtcId = crtc.crtc_id,
 			bufferId = fb.value,
-			x = 0.convert(),
-			y = 0.convert(),
+			x = 0U,
+			y = 0U,
 			connectors = cValuesOf(nativeWindowDrm.connectorId),
 			count = 1,
 			mode = nativeWindowDrm.modeInfo.ptr,
@@ -119,8 +119,8 @@ internal class NativeWindowDrmGbm(
 			val gbmOffscreenSurface = checkNotNull(nativeWindowDrm.modeInfo.useContents {
 				gbm_surface_create(
 					gbmDevice,
-					1.convert(),
-					1.convert(),
+					1U,
+					1U,
 					GBM_FORMAT_ARGB8888,
 					GBM_BO_USE_SCANOUT or GBM_BO_USE_RENDERING,
 				)
