@@ -101,16 +101,26 @@ internal fun <R> CloserScope.childCloseFinallyScope(block: CloserScope.() -> R):
 	contract {
 		callsInPlace(block, EXACTLY_ONCE)
 	}
-	val child = closer.childCloser()
-	return try {
-		CloserScope(child).block()
-	} finally {
-		child.close()
+	return closer.childCloser().use {
+		CloserScope(it).block()
 	}
 }
 
 /**
- * Create a [Closer] which will be automatically closed if [block] throws.
+ * Create a [Closer] which will be closed whether [block] returns successfully
+ * or throws an exception.
+ */
+internal fun <R> closeFinallyScope(block: CloserScope.() -> R): R {
+	contract {
+		callsInPlace(block, EXACTLY_ONCE)
+	}
+	return Closer().use {
+		CloserScope(it).block()
+	}
+}
+
+/**
+ * Create a [Closer] which will be closed if [block] throws.
  * If no exception is thrown, you **must** encapsulate the [`closer`][CloserScope.closer]
  * within the returned value and close it at a later time.
  */

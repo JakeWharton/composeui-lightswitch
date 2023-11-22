@@ -1,16 +1,12 @@
 import kotlinx.cinterop.CValue
-import kotlinx.cinterop.alloc
 import kotlinx.cinterop.cValuesOf
 import kotlinx.cinterop.get
-import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.pointed
 import kotlinx.cinterop.ptr
 import kotlinx.cinterop.readValue
 import kotlinx.cinterop.useContents
-import kotlinx.cinterop.value
 import lightswitch.DRM_MODE_CONNECTED
 import lightswitch.drmModeConnectorPtr
-import lightswitch.drmModeCrtcPtr
 import lightswitch.drmModeEncoderPtr
 import lightswitch.drmModeFreeConnector
 import lightswitch.drmModeFreeCrtc
@@ -28,17 +24,16 @@ import platform.posix.O_RDWR
 import platform.posix.close
 import platform.posix.open
 import platform.posix.uint32_t
-import platform.posix.uint32_tVar
 
-internal class NativeWindowDrm private constructor(
-	val deviceFd: Int,
+internal class Drm private constructor(
+	val fd: Int,
 	val connectorId: UInt,
-	val crtcPtr: drmModeCrtcPtr,
+	val crtcId: UInt,
 	val modeInfo: CValue<drmModeModeInfo>,
 	private val closer: Closer,
 ) : AutoCloseable by closer {
 	companion object {
-		fun initialize(devicePath: String): NativeWindowDrm = closeOnThrowScope {
+		fun initialize(devicePath: String): Drm = closeOnThrowScope {
 			val deviceFd = open(devicePath, O_RDWR or O_CLOEXEC)
 			check(deviceFd != -1) {
 				"Couldn't open $devicePath"
@@ -113,10 +108,10 @@ internal class NativeWindowDrm private constructor(
 			}
 			println("Got CRTC for ID $crtcId")
 
-			return NativeWindowDrm(
-				deviceFd = deviceFd,
+			return Drm(
+				fd = deviceFd,
 				connectorId = connectorId,
-				crtcPtr = crtcPtr,
+				crtcId = crtcId,
 				modeInfo = modeInfo,
 				closer = closer,
 			)

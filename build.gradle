@@ -30,7 +30,12 @@ kotlin {
 					"usr/include",
 					"usr/include/libdrm",
 				)
+				header("usr/include/GLES2/gl2.h")
+				header("usr/include/GLES2/gl2ext.h")
+				header("usr/include/EGL/egl.h")
+				header("usr/include/EGL/eglext.h")
 				header("usr/include/gbm.h")
+				header("usr/include/xf86drm.h")
 				header("usr/include/xf86drmMode.h")
 			}
 		}
