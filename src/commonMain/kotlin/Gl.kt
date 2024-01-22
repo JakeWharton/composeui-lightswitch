@@ -137,7 +137,7 @@ internal class Gl private constructor(
 
 				println("GL Extensions: " + glGetString(GL_EXTENSIONS.toUInt())!!.reinterpret<ByteVar>().toKString());
 
-				return Gl(
+				Gl(
 					closer = closer,
 					display = display,
 					config = config,

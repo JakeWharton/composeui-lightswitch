@@ -1,2 +1,2 @@
 [libraries]
-kotlin-gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.10"
+kotlin-gradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22"
