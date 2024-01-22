@@ -1,3 +1,5 @@
+import static org.jetbrains.kotlin.gradle.plugin.AbstractKotlinPluginKt.PLUGIN_CLASSPATH_CONFIGURATION_NAME
+
 buildscript {
 	repositories {
 		mavenCentral()
@@ -41,9 +43,21 @@ kotlin {
 		}
 	}
 
+	sourceSets {
+		commonMain {
+			dependencies {
+				implementation libs.jetbrains.compose.runtime
+			}
+		}
+	}
+
 	sourceSets.configureEach {
 		languageSettings.optIn("kotlin.ExperimentalStdlibApi")
 		languageSettings.optIn("kotlin.contracts.ExperimentalContracts")
 		languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")
 	}
+}
+
+dependencies {
+	add(PLUGIN_CLASSPATH_CONFIGURATION_NAME, libs.jetbrains.compose.compiler)
 }
