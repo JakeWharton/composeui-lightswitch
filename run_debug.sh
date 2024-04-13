@@ -3,6 +3,6 @@
 set -e
 
 ./gradlew -q linkDebugExecutableLinuxArm64
-adb push build/bin/linuxArm64/debugExecutable/composeui-lightswitch.kexe /oem/app/flutter-gui
-adb shell /oem/app/flutter-gui/composeui-lightswitch.kexe
-#adb shell 'killall mixpad_gui && /oem/app/flutter-gui/composeui-lightswitch.kexe'
+adb push build/bin/linuxArm64/debugExecutable/composeui-lightswitch.kexe /userdata
+adb shell /userdata/composeui-lightswitch.kexe
+#adb shell 'killall mixpad_gui && /userdata/composeui-lightswitch.kexe'
