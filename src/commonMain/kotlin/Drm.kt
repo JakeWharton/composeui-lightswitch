@@ -79,7 +79,7 @@ internal class Drm private constructor(
 				connectorId = connector.connector_id
 				modeInfo = connector.modes!![0].readValue()
 				modeInfo.useContents {
-					println("Resolution: ${vdisplay}x$hdisplay")
+					println("Resolution: ${hdisplay}x$vdisplay")
 				}
 
 				crtcId = encoderPtr.pointed.crtc_id
