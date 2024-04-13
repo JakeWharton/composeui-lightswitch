@@ -10,4 +10,5 @@ adb pull \
 	/usr/lib/libdrm.so \
 	/usr/lib/libinput.so \
 	/usr/lib/libmali.so \
+	/usr/lib/libfontconfig.so \
 	usr/lib/

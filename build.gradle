@@ -21,6 +21,7 @@ kotlin {
 				"-L${file("usr/lib").absolutePath}",
 				"-ldrm",
 				"-lmali",
+				"-lfontconfig",
 				// Do not check for symbols within our shared libraries.
 				"--allow-shlib-undefined",
 			)
@@ -48,6 +49,7 @@ kotlin {
 		commonMain {
 			dependencies {
 				implementation libs.jetbrains.compose.runtime
+				implementation 'org.jetbrains.skiko:skiko-linuxarm64:0.0.0-SNAPSHOT'
 			}
 		}
 	}

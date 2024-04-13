@@ -12,7 +12,6 @@ import kotlinx.cinterop.reinterpret
 import kotlinx.cinterop.sizeOf
 import kotlinx.cinterop.staticCFunction
 import kotlinx.cinterop.toKString
-import kotlinx.cinterop.useContents
 import kotlinx.cinterop.value
 import lightswitch.DRM_EVENT_CONTEXT_VERSION
 import lightswitch.DRM_MODE_PAGE_FLIP_EVENT
@@ -42,6 +41,19 @@ import lightswitch.input_event
 import lightswitch.select_fd_isset
 import lightswitch.select_fd_set
 import lightswitch.select_fd_zero
+import org.jetbrains.skia.BackendRenderTarget
+import org.jetbrains.skia.Color
+import org.jetbrains.skia.ColorSpace
+import org.jetbrains.skia.DirectContext
+import org.jetbrains.skia.Font
+import org.jetbrains.skia.FramebufferFormat
+import org.jetbrains.skia.Paint
+import org.jetbrains.skia.Surface
+import org.jetbrains.skia.SurfaceColorFormat
+import org.jetbrains.skia.SurfaceOrigin
+import org.jetbrains.skia.SurfaceProps
+import org.jetbrains.skia.TextLine
+import org.jetbrains.skia.Typeface
 import platform.posix.FD_SETSIZE
 import platform.posix.calloc
 import platform.posix.errno
@@ -60,8 +72,9 @@ private class State(
 	val drm: Drm,
 	val gbm: Gbm,
 	val gl: Gl,
+	val context: DirectContext,
+	var thisBo: CPointer<gbm_bo>,
 	var lastBo: CPointer<gbm_bo>?,
-	var nextBo: CPointer<gbm_bo>,
 )
 
 fun main() = closeFinallyScope {
@@ -102,12 +115,16 @@ fun main() = closeFinallyScope {
 		eventContext.version = DRM_EVENT_CONTEXT_VERSION
 		eventContext.page_flip_handler = staticCFunction(::pageFlipHandler)
 
+		val context = DirectContext.makeEGL()
+		closer += context::close
+
 		val state = State(
 			drm = drm,
 			gbm = gbm,
 			gl = gl,
+			context = context,
+			thisBo = firstBo,
 			lastBo = null,
-			nextBo = firstBo,
 		)
 		closer += {
 			state.lastBo?.let { lastBo ->
@@ -117,7 +134,7 @@ fun main() = closeFinallyScope {
 		}
 
 		val statePtr = StableRef.create(state).useInScope().asCPointer()
-		draw(drm.fd, statePtr, state)
+		renderFrame(drm.fd, statePtr, state)
 
 		val event = alloc<input_event>()
 		val eventSize = sizeOf<input_event>()
@@ -161,19 +178,18 @@ fun main() = closeFinallyScope {
 private fun pageFlipHandler(fd: Int, frame: UInt, sec: UInt, usec: UInt, data: COpaquePointer?) {
 	println("Page flip!")
 
-	val stuff = data!!.asStableRef<State>().get()
-	draw(fd, data, stuff)
+	val state = data!!.asStableRef<State>().get()
+	renderFrame(fd, data, state)
 }
 
-private fun draw(fd: Int, data: COpaquePointer, state: State) {
-	println("Draw!!!")
+private fun renderFrame(fd: Int, data: COpaquePointer, state: State) {
+	println("Render frame!!!")
 
 	state.lastBo?.let { lastBo ->
 		gbm_surface_release_buffer(state.gbm.surfacePtr, lastBo);
 	}
 
-	glClear(GL_COLOR_BUFFER_BIT.toUInt())
-	glClearColor(0.2f, 0.3f, 0.5f, 1.0f)
+	draw(state)
 
 	eglSwapBuffers(state.gl.display, state.gl.surface)
 	val nextBo = checkNotNull(gbm_surface_lock_front_buffer(state.gbm.surfacePtr)) {
@@ -196,8 +212,52 @@ private fun draw(fd: Int, data: COpaquePointer, state: State) {
 	}
 	println("Queued page flip.")
 
-	state.lastBo = state.nextBo
-	state.nextBo = nextBo;
+	state.lastBo = state.thisBo
+	state.thisBo = nextBo
+}
+
+private fun draw(state: State) {
+	val width: Int
+	val height: Int
+	state.drm.modeInfo.useContents {
+		width = hdisplay.convert()
+		height = vdisplay.convert()
+	}
+
+	val renderTarget = BackendRenderTarget.makeGL(
+		width = width,
+		height = height,
+		sampleCnt = 0,
+		stencilBits = 8,
+		fbId = 0,
+		fbFormat = FramebufferFormat.GR_GL_RGBA8,
+	)
+
+	val surface = Surface.makeFromBackendRenderTarget(
+		state.context,
+		renderTarget,
+		SurfaceOrigin.BOTTOM_LEFT,
+		SurfaceColorFormat.RGBA_8888,
+		ColorSpace.sRGB,
+		SurfaceProps()
+	) ?: throw IllegalStateException("Cannot create surface")
+
+	val canvas = surface.canvas
+
+	canvas.clear(Color.RED)
+
+	val bluePaint = Paint().apply { color = Color.BLUE }
+	canvas.drawCircle(50f, 50f, 100f, bluePaint)
+
+	val greenPaint = Paint().apply { color = Color.GREEN }
+	canvas.drawLine(10f, 10f, 110f, 110f, greenPaint)
+
+	val blackPaint = Paint().apply { color = Color.BLACK }
+	canvas.drawTextLine(TextLine.make("Skia", Font(Typeface.makeDefault(), 50f)), 10f, 250f, blackPaint)
+
+	surface.flushAndSubmit()
+	surface.close()
+	renderTarget.close()
 }
 
 private fun drm_fb_get_from_bo(drm: Drm, bo: CPointer<gbm_bo>): CPointer<drm_fb> {
@@ -207,7 +267,7 @@ private fun drm_fb_get_from_bo(drm: Drm, bo: CPointer<gbm_bo>): CPointer<drm_fb>
 	}
 
 	val drmFbSize = sizeOf<drm_fb>().toULong()
-	val fbPtr = checkNotNull( calloc(1U, drmFbSize)) {
+	val fbPtr = checkNotNull(calloc(1U, drmFbSize)) {
 		"Unable to allocate $drmFbSize bytes for drm_fb"
 	}.reinterpret<drm_fb>()
 	val fb = fbPtr.pointed
