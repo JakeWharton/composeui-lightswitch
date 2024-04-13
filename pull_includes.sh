@@ -10,12 +10,22 @@ pushd usr/downloads > /dev/null
 echo "Downloading GBM / GLES2 via Mesa…"
 
 mesa_version="18.0.0"
-curl -L --no-progress-meter "https://archive.mesa3d.org/mesa-$mesa_version.tar.gz" > "mesa-$mesa_version.tar.xz"
-tar -xf "mesa-$mesa_version.tar.xz"
-rm "mesa-$mesa_version.tar.xz"
+curl -L --no-progress-meter "https://archive.mesa3d.org/mesa-$mesa_version.tar.gz" > "mesa-$mesa_version.tar.gz"
+tar -xf "mesa-$mesa_version.tar.gz"
+rm "mesa-$mesa_version.tar.gz"
 cp "mesa-$mesa_version/src/gbm/main/gbm.h" ../include
 cp -r "mesa-$mesa_version/include/GLES2" ../include
 rm -r "mesa-$mesa_version"
+
+echo "Downloading libinput…"
+
+libinput_version="1.13.0"
+curl -L --no-progress-meter "https://www.freedesktop.org/software/libinput/libinput-$libinput_version.tar.xz" > "libinput-$libinput_version.tar.xz"
+tar -xf "libinput-$libinput_version.tar.xz"
+rm "libinput-$libinput_version.tar.xz"
+cp "libinput-$libinput_version/include/linux/input.h" ../include
+cp -r "libinput-$libinput_version/include/linux/linux" ../include
+rm -r "libinput-$libinput_version"
 
 echo "Downloading EGL…"
 

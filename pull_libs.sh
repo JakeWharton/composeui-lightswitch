@@ -8,5 +8,6 @@ adb pull \
 	/usr/lib/libGLESv2.so \
 	/usr/lib/libEGL.so \
 	/usr/lib/libdrm.so \
+	/usr/lib/libinput.so \
 	/usr/lib/libmali.so \
 	usr/lib/

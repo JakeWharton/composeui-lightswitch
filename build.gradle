@@ -37,6 +37,7 @@ kotlin {
 				header("usr/include/EGL/egl.h")
 				header("usr/include/EGL/eglext.h")
 				header("usr/include/gbm.h")
+				header("usr/include/input.h")
 				header("usr/include/xf86drm.h")
 				header("usr/include/xf86drmMode.h")
 			}

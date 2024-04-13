@@ -26,3 +26,8 @@ static inline void select_fd_zero(fd_set *set) {
 static inline int select_fd_isset(int descriptor, fd_set* set) {
 	return FD_ISSET(descriptor, set);
 }
+
+
+static inline unsigned int eviocgname(int len) {
+	return EVIOCGNAME(len);
+}
