@@ -18,7 +18,7 @@ internal class KeyInput private constructor(
 				println("Closing key input device")
 				close(deviceFd)
 			}
-			println("Opened key input device")
+			println("Opened key input device (fd: $deviceFd)")
 
 			return KeyInput(
 				deviceFd,

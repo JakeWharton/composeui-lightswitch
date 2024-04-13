@@ -42,7 +42,7 @@ internal class Drm private constructor(
 				println("Closing DRM device")
 				close(deviceFd)
 			}
-			println("Opened DRM device $deviceFd")
+			println("Opened DRM device (fd: $deviceFd)")
 
 			val connectorId: uint32_t
 			val modeInfo: CValue<drmModeModeInfo>

@@ -18,7 +18,7 @@ internal class TouchInput private constructor(
 				println("Closing touch input device")
 				close(deviceFd)
 			}
-			println("Opened touch input device")
+			println("Opened touch input device (fd: $deviceFd)")
 
 			return TouchInput(
 				deviceFd,

@@ -4,6 +4,7 @@ import kotlinx.cinterop.IntVar
 import kotlinx.cinterop.alloc
 import kotlinx.cinterop.allocArray
 import kotlinx.cinterop.cValuesOf
+import kotlinx.cinterop.convert
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.pointed
 import kotlinx.cinterop.ptr
@@ -38,15 +39,18 @@ import lightswitch.gbm_surface_lock_front_buffer
 import lightswitch.gbm_surface_release_buffer
 import lightswitch.glClear
 import lightswitch.glClearColor
+import lightswitch.input_event
 import lightswitch.select_fd_isset
 import lightswitch.select_fd_set
 import lightswitch.select_fd_zero
 import platform.linux.char16_tVar
+import platform.posix.FD_SETSIZE
 import platform.posix.calloc
 import platform.posix.errno
 import platform.posix.fd_set
 import platform.posix.free
 import platform.posix.ioctl
+import platform.posix.read
 import platform.posix.select
 import platform.posix.strerror
 import platform.posix.uint32_tVar
@@ -84,8 +88,6 @@ fun main() = closeFinallyScope {
 
 		val fds = alloc<fd_set>()
 		select_fd_zero(fds.ptr)
-		select_fd_set(0, fds.ptr)
-		select_fd_set(drm.fd, fds.ptr)
 
 		val gbm = Gbm.initialize(drm).useInScope()
 		val gl = Gl.initialize(gbm).useInScope()
@@ -124,6 +126,9 @@ fun main() = closeFinallyScope {
 		eventContext.version = DRM_EVENT_CONTEXT_VERSION
 		eventContext.page_flip_handler = staticCFunction(::page_flip_handler)
 
+		val event = alloc<input_event>()
+		val eventSize = sizeOf<input_event>()
+
 		while (true) {
 			println("Draw!!!")
 
@@ -134,7 +139,7 @@ fun main() = closeFinallyScope {
 			val nextBo = checkNotNull(gbm_surface_lock_front_buffer(gbm.surfacePtr)) {
 				"Unable to lock GBM surface front buffer"
 			}
-			println("Locked next GBM surface front buffer")
+			//println("Locked next GBM surface front buffer")
 
 			val nextFb = drm_fb_get_from_bo(drm, nextBo)
 
@@ -152,21 +157,37 @@ fun main() = closeFinallyScope {
 					"Failed to queue page flip: " + strerror(errno)?.toKString()
 				}
 			}
-			println("Queued page flip.")
+			//println("Queued page flip.")
 
 			while (waitForPageFlip.value != 0) {
-				val result = select(drm.fd + 1, fds.ptr, null, null, null)
+				// TODO Select should be the outer loop (only loop?)
+				select_fd_set(drm.fd, fds.ptr)
+				select_fd_set(touch.fd, fds.ptr)
+				select_fd_set(keys.fd, fds.ptr)
+				val result = select(FD_SETSIZE, fds.ptr, null, null, null)
 				check(result >= 0) {
 					"select error: " + strerror(errno)?.toKString()
 				}
 				check(result != 0) {
 					"select timeout"
 				}
-				if (select_fd_isset(0, fds.ptr) != 0) {
-					println("User interrupted!")
-					break
+				if (select_fd_isset(touch.fd, fds.ptr) != 0) {
+					val size = read(touch.fd, event.ptr, eventSize.convert())
+					check(size == eventSize) {
+						"Touch FD read too few bytes: $size < $eventSize"
+					}
+					println("Touch! type: ${event.type}, code: ${event.code}, value: ${event.value}, time: ${event.time.tv_sec}.${event.time.tv_usec}")
 				}
-				drmHandleEvent(drm.fd, eventContext.ptr)
+				if (select_fd_isset(keys.fd, fds.ptr) != 0) {
+					val size = read(keys.fd, event.ptr, eventSize.convert())
+					check(size == eventSize) {
+						"Key FD read too few bytes: $size < $eventSize"
+					}
+					println("Key! type: ${event.type}, code: ${event.code}, value: ${event.value}, time: ${event.time.tv_sec}.${event.time.tv_usec}")
+				}
+				if (select_fd_isset(drm.fd, fds.ptr) != 0) {
+					drmHandleEvent(drm.fd, eventContext.ptr)
+				}
 			}
 
 			gbm_surface_release_buffer(gbm.surfacePtr, bo);
