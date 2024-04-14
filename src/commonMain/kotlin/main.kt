@@ -2,7 +2,6 @@ import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.IntVar
 import kotlinx.cinterop.alloc
-import kotlinx.cinterop.allocArray
 import kotlinx.cinterop.cValuesOf
 import kotlinx.cinterop.convert
 import kotlinx.cinterop.memScoped
@@ -25,7 +24,6 @@ import lightswitch.drmModeRmFB
 import lightswitch.drmModeSetCrtc
 import lightswitch.drm_fb
 import lightswitch.eglSwapBuffers
-import lightswitch.eviocgname
 import lightswitch.gbm_bo
 import lightswitch.gbm_bo_get_device
 import lightswitch.gbm_bo_get_handle
@@ -43,13 +41,11 @@ import lightswitch.input_event
 import lightswitch.select_fd_isset
 import lightswitch.select_fd_set
 import lightswitch.select_fd_zero
-import platform.linux.char16_tVar
 import platform.posix.FD_SETSIZE
 import platform.posix.calloc
 import platform.posix.errno
 import platform.posix.fd_set
 import platform.posix.free
-import platform.posix.ioctl
 import platform.posix.read
 import platform.posix.select
 import platform.posix.strerror
@@ -63,32 +59,7 @@ fun main() = closeFinallyScope {
 	memScoped {
 		val touch = TouchInput.initialize(touchDevice).useInScope()
 		val keys = KeyInput.initialize(keyDevice).useInScope()
-
-		val touchName = allocArray<char16_tVar>(256)
-		ioctl(touch.fd, eviocgname(256).toULong(), touchName)
-		println(
-			"""
-			|Touch input:
-			| - device: $touchDevice
-			| - name: ${touchName.toKString()}
-			""".trimMargin()
-		)
-
-		val keysName = allocArray<char16_tVar>(256)
-		ioctl(keys.fd, eviocgname(256).toULong(), keysName)
-		println(
-			"""
-			|Key input:
-			| - device: $keyDevice
-			| - name: ${keysName.toKString()}
-			""".trimMargin()
-		)
-
 		val drm = Drm.initialize(renderDevice).useInScope()
-
-		val fds = alloc<fd_set>()
-		select_fd_zero(fds.ptr)
-
 		val gbm = Gbm.initialize(drm).useInScope()
 		val gl = Gl.initialize(gbm).useInScope()
 
@@ -128,6 +99,9 @@ fun main() = closeFinallyScope {
 
 		val event = alloc<input_event>()
 		val eventSize = sizeOf<input_event>()
+
+		val fds = alloc<fd_set>()
+		select_fd_zero(fds.ptr)
 
 		while (true) {
 			println("Draw!!!")
