@@ -1,7 +1,8 @@
 import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
-import kotlinx.cinterop.IntVar
+import kotlinx.cinterop.StableRef
 import kotlinx.cinterop.alloc
+import kotlinx.cinterop.asStableRef
 import kotlinx.cinterop.cValuesOf
 import kotlinx.cinterop.convert
 import kotlinx.cinterop.memScoped
@@ -55,6 +56,14 @@ private const val renderDevice = "/dev/dri/card0"
 private const val touchDevice = "/dev/input/event1"
 private const val keyDevice = "/dev/input/event3"
 
+private class State(
+	val drm: Drm,
+	val gbm: Gbm,
+	val gl: Gl,
+	var lastBo: CPointer<gbm_bo>?,
+	var nextBo: CPointer<gbm_bo>,
+)
+
 fun main() = closeFinallyScope {
 	memScoped {
 		val touch = TouchInput.initialize(touchDevice).useInScope()
@@ -67,16 +76,12 @@ fun main() = closeFinallyScope {
 		glClear(GL_COLOR_BUFFER_BIT.toUInt())
 		eglSwapBuffers(gl.display, gl.surface)
 
-		var bo = checkNotNull(gbm_surface_lock_front_buffer(gbm.surfacePtr)) {
-			"Unable to lock GBM surface front buffer"
+		val firstBo = checkNotNull(gbm_surface_lock_front_buffer(gbm.surfacePtr)) {
+			"Unable to lock first GBM surface front buffer"
 		}
-		closer += {
-			println("Releasing GBM surface buffer")
-			gbm_surface_release_buffer(gbm.surfacePtr, bo)
-		}
-		println("Locked GBM surface front buffer")
+		println("Locked first GBM surface front buffer")
 
-		val firstFb = drm_fb_get_from_bo(drm, bo)
+		val firstFb = drm_fb_get_from_bo(drm, firstBo)
 		drmModeSetCrtc(
 			fd = drm.fd,
 			crtcId = drm.crtcId,
@@ -95,7 +100,24 @@ fun main() = closeFinallyScope {
 
 		val eventContext = alloc<drmEventContext>()
 		eventContext.version = DRM_EVENT_CONTEXT_VERSION
-		eventContext.page_flip_handler = staticCFunction(::page_flip_handler)
+		eventContext.page_flip_handler = staticCFunction(::pageFlipHandler)
+
+		val state = State(
+			drm = drm,
+			gbm = gbm,
+			gl = gl,
+			lastBo = null,
+			nextBo = firstBo,
+		)
+		closer += {
+			state.lastBo?.let { lastBo ->
+				println("Releasing last GBM surface buffer")
+				gbm_surface_release_buffer(gbm.surfacePtr, lastBo)
+			}
+		}
+
+		val statePtr = StableRef.create(state).useInScope().asCPointer()
+		draw(drm.fd, statePtr, state)
 
 		val event = alloc<input_event>()
 		val eventSize = sizeOf<input_event>()
@@ -104,75 +126,78 @@ fun main() = closeFinallyScope {
 		select_fd_zero(fds.ptr)
 
 		while (true) {
-			println("Draw!!!")
-
-			glClear(GL_COLOR_BUFFER_BIT.toUInt())
-			glClearColor(0.2f, 0.3f, 0.5f, 1.0f)
-
-			eglSwapBuffers(gl.display, gl.surface)
-			val nextBo = checkNotNull(gbm_surface_lock_front_buffer(gbm.surfacePtr)) {
-				"Unable to lock GBM surface front buffer"
-			}
-			//println("Locked next GBM surface front buffer")
-
-			val nextFb = drm_fb_get_from_bo(drm, nextBo)
-
-			val waitForPageFlip = alloc<IntVar>()
-			waitForPageFlip.value = 1
-
-			drmModePageFlip(
-				fd = drm.fd,
-				crtc_id = drm.crtcId,
-				fb_id = nextFb.pointed.fb_id,
-				flags = DRM_MODE_PAGE_FLIP_EVENT.toUInt(),
-				user_data = waitForPageFlip.ptr,
-			).let { result ->
-				check(result == 0) {
-					"Failed to queue page flip: " + strerror(errno)?.toKString()
-				}
-			}
-			//println("Queued page flip.")
-
-			while (waitForPageFlip.value != 0) {
-				// TODO Select should be the outer loop (only loop?)
-				select_fd_set(drm.fd, fds.ptr)
-				select_fd_set(touch.fd, fds.ptr)
-				select_fd_set(keys.fd, fds.ptr)
-				val result = select(FD_SETSIZE, fds.ptr, null, null, null)
-				check(result >= 0) {
-					"select error: " + strerror(errno)?.toKString()
-				}
-				check(result != 0) {
-					"select timeout"
-				}
-				if (select_fd_isset(touch.fd, fds.ptr) != 0) {
-					val size = read(touch.fd, event.ptr, eventSize.convert())
-					check(size == eventSize) {
-						"Touch FD read too few bytes: $size < $eventSize"
-					}
-					println("Touch! type: ${event.type}, code: ${event.code}, value: ${event.value}, time: ${event.time.tv_sec}.${event.time.tv_usec}")
-				}
-				if (select_fd_isset(keys.fd, fds.ptr) != 0) {
-					val size = read(keys.fd, event.ptr, eventSize.convert())
-					check(size == eventSize) {
-						"Key FD read too few bytes: $size < $eventSize"
-					}
-					println("Key! type: ${event.type}, code: ${event.code}, value: ${event.value}, time: ${event.time.tv_sec}.${event.time.tv_usec}")
-				}
-				if (select_fd_isset(drm.fd, fds.ptr) != 0) {
-					drmHandleEvent(drm.fd, eventContext.ptr)
-				}
+			select_fd_set(drm.fd, fds.ptr)
+			select_fd_set(touch.fd, fds.ptr)
+			select_fd_set(keys.fd, fds.ptr)
+			select(FD_SETSIZE, fds.ptr, null, null, null).let { result ->
+				check(result >= 0) { "select error: " + strerror(errno)?.toKString() }
+				check(result != 0) { "select timeout" }
 			}
 
-			gbm_surface_release_buffer(gbm.surfacePtr, bo);
-			bo = nextBo;
+			if (select_fd_isset(touch.fd, fds.ptr) != 0) {
+				val size = read(touch.fd, event.ptr, eventSize.convert())
+				check(size == eventSize) {
+					"Touch FD read too few bytes: $size < $eventSize"
+				}
+				println("Touch! type: ${event.type}, code: ${event.code}, value: ${event.value}, time: ${event.time.tv_sec}.${event.time.tv_usec}")
+			}
+
+			if (select_fd_isset(keys.fd, fds.ptr) != 0) {
+				val size = read(keys.fd, event.ptr, eventSize.convert())
+				check(size == eventSize) {
+					"Key FD read too few bytes: $size < $eventSize"
+				}
+				println("Key! type: ${event.type}, code: ${event.code}, value: ${event.value}, time: ${event.time.tv_sec}.${event.time.tv_usec}")
+			}
+
+			if (select_fd_isset(drm.fd, fds.ptr) != 0) {
+				drmHandleEvent(drm.fd, eventContext.ptr)
+			}
 		}
 	}
 }
 
 @Suppress("UNUSED_PARAMETER") // Signature required for DRM.
-private fun page_flip_handler(fd: Int, frame: UInt, sec: UInt, usec: UInt, data: COpaquePointer?) {
-	data!!.reinterpret<IntVar>().pointed.value = 0
+private fun pageFlipHandler(fd: Int, frame: UInt, sec: UInt, usec: UInt, data: COpaquePointer?) {
+	println("Page flip!")
+
+	val stuff = data!!.asStableRef<State>().get()
+	draw(fd, data, stuff)
+}
+
+private fun draw(fd: Int, data: COpaquePointer, state: State) {
+	println("Draw!!!")
+
+	state.lastBo?.let { lastBo ->
+		gbm_surface_release_buffer(state.gbm.surfacePtr, lastBo);
+	}
+
+	glClear(GL_COLOR_BUFFER_BIT.toUInt())
+	glClearColor(0.2f, 0.3f, 0.5f, 1.0f)
+
+	eglSwapBuffers(state.gl.display, state.gl.surface)
+	val nextBo = checkNotNull(gbm_surface_lock_front_buffer(state.gbm.surfacePtr)) {
+		"Unable to lock next GBM surface front buffer"
+	}
+	println("Locked next GBM surface front buffer")
+
+	val nextFb = drm_fb_get_from_bo(state.drm, nextBo)
+
+	drmModePageFlip(
+		fd = fd,
+		crtc_id = state.drm.crtcId,
+		fb_id = nextFb.pointed.fb_id,
+		flags = DRM_MODE_PAGE_FLIP_EVENT.toUInt(),
+		user_data = data,
+	).let { result ->
+		check(result == 0) {
+			"Failed to queue page flip: " + strerror(errno)?.toKString()
+		}
+	}
+	println("Queued page flip.")
+
+	state.lastBo = state.nextBo
+	state.nextBo = nextBo;
 }
 
 private fun drm_fb_get_from_bo(drm: Drm, bo: CPointer<gbm_bo>): CPointer<drm_fb> {

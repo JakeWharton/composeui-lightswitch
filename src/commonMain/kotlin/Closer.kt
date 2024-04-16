@@ -1,6 +1,7 @@
 import kotlin.concurrent.AtomicInt
 import kotlin.contracts.InvocationKind.EXACTLY_ONCE
 import kotlin.contracts.contract
+import kotlinx.cinterop.StableRef
 
 /** Tracks closable resources and closes them all at once. */
 internal class Closer : AutoCloseable {
@@ -89,6 +90,9 @@ internal class Closer : AutoCloseable {
 
 internal class CloserScope(val closer: Closer) {
 	fun <R : AutoCloseable> R.useInScope(): R = also(closer::plusAssign)
+	fun <R : Any> StableRef<R>.useInScope(): StableRef<R> = apply {
+		closer += { dispose() }
+	}
 }
 
 /**

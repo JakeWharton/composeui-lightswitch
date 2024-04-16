@@ -75,6 +75,15 @@ Additionally, the `push_debug.sh` and `push_release.sh` scripts will create an a
 copy of the built-in GUI that is never again touched should you need to restore manually.
 
 
+## Thanks
+
+I am not a low-level graphics programmer.
+These snippets were instrumental in the setup of this project.
+
+- https://gist.github.com/Miouyouyou/89e9fe56a2c59bce7d4a18a858f389ef
+- https://github.com/dvdhrm/docs/blob/master/drm-howto/modeset-vsync.c
+
+
 ## License
 
     Copyright 2023 Jake Wharton
