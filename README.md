@@ -47,7 +47,7 @@ Now you can use regular ADB commands to interact with the device.
 `adb shell` will give you a Bash shell as root.
 `adb pull` and `adb push` will allow file transfer.
 
-However, in order to send over files, you must first remount the `/oem` filesystem as read-write.
+However, in order to replace the built-in GUI, you must first remount the `/oem` filesystem as read-write.
 In an `adb shell` to the device, run: `mount -o remount,rw /oem`. Later, if you want, you can revert
 it to read-only: `mount -o remount,ro /oem`.
 
@@ -56,7 +56,14 @@ it to read-only: `mount -o remount,ro /oem`.
 
 Builds can be created on a Linux or Mac machine running on X86 or ARM.
 
-Once connected to the device (see above), there are three handy scripts for testing:
+Once connected to the device (see above), there are scripts for quickly testing:
+
+ * `run_debug.sh` build a debug executable, pushes it to the device, kills the built-in GUI,
+   and starts our executable (the built-in GUI will come back within 15 seconds).
+ * `release.sh` build a release executable, pushes it to the device, kills the built-in GUI,
+   and starts our executable (the built-in GUI will come back within 15 seconds).
+
+Or for longer deployments:
 
  * `push_debug.sh` builds a debug executable, pushes it to the device, kills the built-in GUI,
    backs up the built-in GUI, replaces the GUI with our executable, and tails the logs.
