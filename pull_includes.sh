@@ -19,12 +19,11 @@ rm -r "mesa-$mesa_version"
 
 echo "Downloading libinput…"
 
-libinput_version="1.13.0"
+libinput_version="1.8.2"
 curl -L --no-progress-meter "https://www.freedesktop.org/software/libinput/libinput-$libinput_version.tar.xz" > "libinput-$libinput_version.tar.xz"
 tar -xf "libinput-$libinput_version.tar.xz"
 rm "libinput-$libinput_version.tar.xz"
 cp "libinput-$libinput_version/include/linux/input.h" ../include
-cp -r "libinput-$libinput_version/include/linux/linux" ../include
 rm -r "libinput-$libinput_version"
 
 echo "Downloading EGL…"
