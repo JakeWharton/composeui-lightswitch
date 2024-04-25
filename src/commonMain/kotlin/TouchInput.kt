@@ -28,7 +28,7 @@ internal class TouchInput private constructor(
 					|Opened touch input device (fd: $deviceFd):
 					| - device: $devicePath
 					| - name: ${name.toKString()}
-					""".trimMargin()
+					""".trimMargin(),
 				)
 			}
 

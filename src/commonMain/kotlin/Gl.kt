@@ -105,10 +105,7 @@ internal class Gl private constructor(
 					"Failed to obtain EGL config"
 				}
 
-				val contextAttributes = cValuesOf(
-						EGL_CONTEXT_CLIENT_VERSION, 2,
-						EGL_NONE
-				)
+				val contextAttributes = cValuesOf(EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE)
 				val context = eglCreateContext(display, config, EGL_NO_CONTEXT, contextAttributes.ptr)
 					.checkNotNull { "Failed to create EGL context" }
 					.scopedUseWithClose("Destroying EGL context") { eglDestroyContext(display, it) }
@@ -122,7 +119,7 @@ internal class Gl private constructor(
 				eglMakeCurrent(display, surface, surface, context)
 				println("Made EGL surface current")
 
-				println("GL Extensions: " + glGetString(GL_EXTENSIONS.toUInt())!!.reinterpret<ByteVar>().toKString());
+				println("GL Extensions: " + glGetString(GL_EXTENSIONS.toUInt())!!.reinterpret<ByteVar>().toKString())
 
 				Gl(
 					closer = closer,

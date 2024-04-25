@@ -28,7 +28,7 @@ internal class KeyInput private constructor(
 					|Opened key input device (fd: $deviceFd):
 					| - device: $devicePath
 					| - name: ${name.toKString()}
-					""".trimMargin()
+					""".trimMargin(),
 				)
 			}
 

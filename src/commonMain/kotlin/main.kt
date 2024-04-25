@@ -64,9 +64,9 @@ import platform.posix.select
 import platform.posix.strerror
 import platform.posix.uint32_tVar
 
-private const val renderDevice = "/dev/dri/card0"
-private const val touchDevice = "/dev/input/event1"
-private const val keyDevice = "/dev/input/event3"
+private const val RENDER_DEVICE = "/dev/dri/card0"
+private const val TOUCH_DEVICE = "/dev/input/event1"
+private const val KEY_DEVICE = "/dev/input/event3"
 
 private class State(
 	val drm: Drm,
@@ -79,9 +79,9 @@ private class State(
 
 fun main() = closeFinallyScope {
 	memScoped {
-		val touch = TouchInput.initialize(touchDevice).useInScope()
-		val keys = KeyInput.initialize(keyDevice).useInScope()
-		val drm = Drm.initialize(renderDevice).useInScope()
+		val touch = TouchInput.initialize(TOUCH_DEVICE).useInScope()
+		val keys = KeyInput.initialize(KEY_DEVICE).useInScope()
+		val drm = Drm.initialize(RENDER_DEVICE).useInScope()
 		val gbm = Gbm.initialize(drm).useInScope()
 		val gl = Gl.initialize(gbm).useInScope()
 
@@ -94,7 +94,7 @@ fun main() = closeFinallyScope {
 		}
 		println("Locked first GBM surface front buffer")
 
-		val firstFb = drm_fb_get_from_bo(drm, firstBo)
+		val firstFb = drmFbGetFromBo(drm, firstBo)
 		drmModeSetCrtc(
 			fd = drm.fd,
 			crtcId = drm.crtcId,
@@ -186,7 +186,7 @@ private fun renderFrame(fd: Int, data: COpaquePointer, state: State) {
 	println("Render frame!!!")
 
 	state.lastBo?.let { lastBo ->
-		gbm_surface_release_buffer(state.gbm.surfacePtr, lastBo);
+		gbm_surface_release_buffer(state.gbm.surfacePtr, lastBo)
 	}
 
 	draw(state)
@@ -197,7 +197,7 @@ private fun renderFrame(fd: Int, data: COpaquePointer, state: State) {
 	}
 	println("Locked next GBM surface front buffer")
 
-	val nextFb = drm_fb_get_from_bo(state.drm, nextBo)
+	val nextFb = drmFbGetFromBo(state.drm, nextBo)
 
 	drmModePageFlip(
 		fd = fd,
@@ -239,7 +239,7 @@ private fun draw(state: State) {
 		SurfaceOrigin.BOTTOM_LEFT,
 		SurfaceColorFormat.RGBA_8888,
 		ColorSpace.sRGB,
-		SurfaceProps()
+		SurfaceProps(),
 	) ?: throw IllegalStateException("Cannot create surface")
 
 	val canvas = surface.canvas
@@ -260,7 +260,7 @@ private fun draw(state: State) {
 	renderTarget.close()
 }
 
-private fun drm_fb_get_from_bo(drm: Drm, bo: CPointer<gbm_bo>): CPointer<drm_fb> {
+private fun drmFbGetFromBo(drm: Drm, bo: CPointer<gbm_bo>): CPointer<drm_fb> {
 	val userDataPtr = gbm_bo_get_user_data(bo)
 	if (userDataPtr != null) {
 		return userDataPtr.reinterpret()
@@ -287,12 +287,12 @@ private fun drm_fb_get_from_bo(drm: Drm, bo: CPointer<gbm_bo>): CPointer<drm_fb>
 		}
 	}
 
-	gbm_bo_set_user_data(bo, fbPtr, staticCFunction(::drm_fb_destroy_callback))
+	gbm_bo_set_user_data(bo, fbPtr, staticCFunction(::drmFbDestroyCallback))
 
 	return fbPtr
 }
 
-private fun drm_fb_destroy_callback(bo: CPointer<gbm_bo>?, data: COpaquePointer?) {
+private fun drmFbDestroyCallback(bo: CPointer<gbm_bo>?, data: COpaquePointer?) {
 	val fb = data!!.reinterpret<drm_fb>()
 	val fbId = fb.pointed.fb_id
 	if (fbId != 0U) {
