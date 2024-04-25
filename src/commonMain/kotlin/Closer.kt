@@ -93,6 +93,12 @@ internal class CloserScope(val closer: Closer) {
 	fun <R : Any> StableRef<R>.useInScope(): StableRef<R> = apply {
 		closer += { dispose() }
 	}
+	fun <R> R.scopedUseWithClose(message: String, action: (R) -> Unit): R = apply {
+		closer += {
+			println(message)
+			action(this)
+		}
+	}
 }
 
 /**

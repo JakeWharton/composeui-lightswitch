@@ -1,4 +1,3 @@
-
 import kotlinx.cinterop.allocArray
 import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.toKString
@@ -17,13 +16,9 @@ internal class TouchInput private constructor(
 	companion object {
 		fun initialize(devicePath: String): TouchInput = closeOnThrowScope {
 			val deviceFd = open(devicePath, O_RDONLY or O_NONBLOCK)
-			check(deviceFd != -1) {
-				"Couldn't open $devicePath"
-			}
-			closer += {
-				println("Closing touch input device")
-				close(deviceFd)
-			}
+				.checkReturn { "Couldn't open $devicePath" }
+				.scopedUseWithClose("Closing touch input device", ::close)
+
 			memScoped {
 				val nameBufferSize = 256
 				val name = allocArray<char16_tVar>(nameBufferSize)

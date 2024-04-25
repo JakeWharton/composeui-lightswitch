@@ -18,30 +18,23 @@ internal class Gbm private constructor(
 ) : AutoCloseable by closer {
 	companion object {
 		fun initialize(drm: Drm): Gbm = closeOnThrowScope {
-			val devicePtr = checkNotNull(gbm_create_device(drm.fd)) {
-				"Couldn't create the GBM device"
-			}
-			closer += {
-				println("Destroying GBM device")
-				gbm_device_destroy(devicePtr)
-			}
+			val devicePtr = gbm_create_device(drm.fd)
+				.checkNotNull { "Couldn't create the GBM device" }
+				.scopedUseWithClose("Destroying GBM device", ::gbm_device_destroy)
 			println("Got GBM device")
 
-			val surfacePtr = checkNotNull(drm.modeInfo.useContents {
-				gbm_surface_create(
-					devicePtr,
-					hdisplay.convert(),
-					vdisplay.convert(),
-					GBM_FORMAT_XRGB8888,
-					GBM_BO_USE_SCANOUT or GBM_BO_USE_RENDERING,
-				)
-			}) {
-				"Failed to create the GBM surface"
-			}
-			closer += {
-				gbm_surface_destroy(surfacePtr)
-				println("Destroyed GBM surface")
-			}
+			val surfacePtr = drm.modeInfo
+				.useContents {
+					gbm_surface_create(
+						devicePtr,
+						hdisplay.convert(),
+						vdisplay.convert(),
+						GBM_FORMAT_XRGB8888,
+						GBM_BO_USE_SCANOUT or GBM_BO_USE_RENDERING,
+					)
+				}
+				.checkNotNull { "Failed to create the GBM surface" }
+				.scopedUseWithClose("Destroying GBM surface", ::gbm_surface_destroy)
 			println("Created GBM surface")
 
 			return Gbm(

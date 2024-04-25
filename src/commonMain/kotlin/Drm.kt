@@ -35,44 +35,27 @@ internal class Drm private constructor(
 	companion object {
 		fun initialize(devicePath: String): Drm = closeOnThrowScope {
 			val deviceFd = open(devicePath, O_RDWR or O_CLOEXEC)
-			check(deviceFd != -1) {
-				"Couldn't open $devicePath"
-			}
-			closer += {
-				println("Closing DRM device")
-				close(deviceFd)
-			}
+				.checkReturn { "Couldn't open $devicePath" }
+				.scopedUseWithClose("Closing DRM device", ::close)
 			println("Opened DRM device (fd: $deviceFd)")
 
 			val connectorId: uint32_t
 			val modeInfo: CValue<drmModeModeInfo>
 			val crtcId: uint32_t
 			childCloseFinallyScope {
-				val resourcesPtr = checkNotNull(drmModeGetResources(deviceFd)) {
-					"Couldn't get resources"
-				}
-				closer += {
-					println("Freeing DRM resources")
-					drmModeFreeResources(resourcesPtr)
-				}
+				val resourcesPtr = drmModeGetResources(deviceFd)
+					.checkNotNull { "DRM resources" }
+					.scopedUseWithClose("Freeing DRM resources", ::drmModeFreeResources)
 				println("Got DRM resources")
 
-				val connectorPtr = checkNotNull(findConnector(deviceFd, resourcesPtr)) {
-					"Couldn't find any connectors"
-				}
-				closer += {
-					println("Freeing DRM connector")
-					drmModeFreeConnector(connectorPtr)
-				}
+				val connectorPtr = findConnector(deviceFd, resourcesPtr)
+					.checkNotNull { "Couldn't find any connectors" }
+					.scopedUseWithClose("Freeing DRM connector", ::drmModeFreeConnector)
 				println("Got DRM connector")
 
-				val encoderPtr = checkNotNull(findEncoder(deviceFd, resourcesPtr, connectorPtr)) {
-					"Couldn't find any encoders"
-				}
-				closer += {
-					println("Freeing DRM encoder")
-					drmModeFreeEncoder(encoderPtr)
-				}
+				val encoderPtr = findEncoder(deviceFd, resourcesPtr, connectorPtr)
+					.checkNotNull { "Couldn't find any encoders" }
+					.scopedUseWithClose("Freeing DRM encoder", ::drmModeFreeEncoder)
 				println("Got DRM encoder")
 
 				val connector = connectorPtr.pointed
@@ -88,24 +71,23 @@ internal class Drm private constructor(
 				check(crtcId != 0U) { "Encoder has no CTRC ID!" }
 			}
 
-			val crtcPtr = checkNotNull(drmModeGetCrtc(deviceFd, crtcId)) {
-				"Couldn't find a suitable CRTC"
-			}
-			closer += {
-				println("Freeing CRTC")
-				val crtc = crtcPtr.pointed
-				drmModeSetCrtc(
-					fd = deviceFd,
-					crtcId = crtc.crtc_id,
-					bufferId = crtc.buffer_id,
-					x = crtc.x,
-					y = crtc.y,
-					connectors = cValuesOf(connectorId),
-					count = 1,
-					mode = crtc.mode.ptr,
-				)
-				drmModeFreeCrtc(crtcPtr)
-			}
+			// TODO We don't use the return value. What's this doing?
+			drmModeGetCrtc(deviceFd, crtcId)
+				.checkNotNull { "Couldn't find a suitable CRTC" }
+				.scopedUseWithClose("Freeing CRTC") { crtcPtr ->
+					val crtc = crtcPtr.pointed
+					drmModeSetCrtc(
+						fd = deviceFd,
+						crtcId = crtc.crtc_id,
+						bufferId = crtc.buffer_id,
+						x = crtc.x,
+						y = crtc.y,
+						connectors = cValuesOf(connectorId),
+						count = 1,
+						mode = crtc.mode.ptr,
+					)
+					drmModeFreeCrtc(crtcPtr)
+				}
 			println("Got CRTC for ID $crtcId")
 
 			return Drm(

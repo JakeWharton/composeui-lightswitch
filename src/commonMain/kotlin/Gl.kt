@@ -116,22 +116,14 @@ internal class Gl private constructor(
 						EGL_CONTEXT_CLIENT_VERSION, 2,
 						EGL_NONE
 				)
-				val context = checkNotNull(eglCreateContext(display, config, EGL_NO_CONTEXT, contextAttribs.ptr)) {
-					"Failed to create EGL context"
-				}
-				closer += {
-					println("Destroying EGL context")
-					eglDestroyContext(display, context)
-				}
+				val context = eglCreateContext(display, config, EGL_NO_CONTEXT, contextAttribs.ptr)
+					.checkNotNull { "Failed to create EGL context" }
+					.scopedUseWithClose("Destroying EGL context") { eglDestroyContext(display, it) }
 				println("Created EGL context")
 
-				val surface = checkNotNull(eglCreateWindowSurface(display, config, gbm.surfacePtr.rawValue.toLong().toULong(), null)) {
-					"Failed to create EGL surface"
-				}
-				closer += {
-					println("Destroying EGL surface")
-					eglDestroySurface(display, surface)
-				}
+				val surface = eglCreateWindowSurface(display, config, gbm.surfacePtr.rawValue.toLong().toULong(), null)
+					.checkNotNull { "Failed to create EGL surface" }
+					.scopedUseWithClose("Destroying EGL surface") { eglDestroySurface(display, it) }
 				println("Created EGL surface")
 
 				eglMakeCurrent(display, surface, surface, context)
