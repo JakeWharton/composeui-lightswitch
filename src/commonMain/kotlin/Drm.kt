@@ -71,7 +71,7 @@ internal class Drm private constructor(
 				check(crtcId != 0U) { "Encoder has no CTRC ID!" }
 			}
 
-			// TODO We don't use the return value. What's this doing?
+			// Look up the current CRTC before overwriting so that we can restore it when closing.
 			drmModeGetCrtc(deviceFd, crtcId)
 				.checkNotNull { "Couldn't find a suitable CRTC" }
 				.scopedUseWithClose("Freeing CRTC") { crtcPtr ->

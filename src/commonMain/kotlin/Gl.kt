@@ -62,37 +62,30 @@ internal class Gl private constructor(
 		fun initialize(gbm: Gbm): Gl = closeOnThrowScope {
 			memScoped {
 				@Suppress("UNCHECKED_CAST") // Types from https://registry.khronos.org/EGL/extensions/EXT/EGL_EXT_platform_base.txt
-				val getPlatformDisplay = checkNotNull(eglGetProcAddress("eglGetPlatformDisplayEXT")) {
-					"Unable to get eglGetPlatformDisplayEXT function pointer"
-				} as CPointer<CFunction<(EGLenum, COpaquePointer, CValuesRef<EGLintVar>?) -> EGLDisplay?>>
+				val getPlatformDisplay = eglGetProcAddress("eglGetPlatformDisplayEXT")
+					.checkNotNull { "Unable to get eglGetPlatformDisplayEXT function pointer" }
+					as CPointer<CFunction<(EGLenum, COpaquePointer, CValuesRef<EGLintVar>?) -> EGLDisplay?>>
 
-				val display = checkNotNull(getPlatformDisplay.invoke(EGL_PLATFORM_GBM_KHR.toUInt(), gbm.devicePtr, null)) {
-					"Unable to get EGL display"
-				}
+				val display = getPlatformDisplay.invoke(EGL_PLATFORM_GBM_KHR.toUInt(), gbm.devicePtr, null)
+					.checkNotNull { "Unable to get EGL display" }
 				println("Got EGL display")
 
-				val major = alloc<EGLintVar>()
-				val minor = alloc<EGLintVar>()
-				check(eglInitialize(display, major.ptr, minor.ptr) == EGL_TRUE.toUInt()) {
-					"Unable to initialize EGL display"
-				}
-				println("Initialized EGL display")
-
-				println("Using display ${display.rawValue} with EGL version ${major.value}.${minor.value}")
-				println("EGL Version " + eglQueryString(display, EGL_VERSION)?.toKString())
-				println("EGL Vendor " + eglQueryString(display, EGL_VENDOR)?.toKString())
-				println("EGL Extensions " + eglQueryString(display, EGL_EXTENSIONS)?.toKString())
+				eglInitialize(display, null, null)
+					.checkEquals(EGL_TRUE.toUInt()) { "Unable to initialize EGL display" }
 				closer += {
 					println("Terminating EGL display")
 					eglTerminate(display)
 				}
+				println("Initialized EGL display")
+				println("EGL Version " + eglQueryString(display, EGL_VERSION)?.toKString())
+				println("EGL Vendor " + eglQueryString(display, EGL_VENDOR)?.toKString())
+				println("EGL Extensions " + eglQueryString(display, EGL_EXTENSIONS)?.toKString())
 
-				check(eglBindAPI(EGL_OPENGL_ES_API.toUInt()) == EGL_TRUE.toUInt()) {
-					"Failed to bind EGL_OPENGL_ES_API"
-				}
+				eglBindAPI(EGL_OPENGL_ES_API.toUInt())
+					.checkEquals(EGL_TRUE.toUInt()) { "Failed to bind EGL_OPENGL_ES_API" }
 				println("Bound OpenGL ES API")
 
-				val configAttribs = cValuesOf(
+				val configAttributes = cValuesOf(
 					EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
 					EGL_RED_SIZE, 8,
 					EGL_GREEN_SIZE, 8,
@@ -100,11 +93,11 @@ internal class Gl private constructor(
 					EGL_ALPHA_SIZE, 0,
 					EGL_STENCIL_SIZE, 8,
 					EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
-					EGL_NONE
+					EGL_NONE,
 				)
 				val configVar = alloc<EGLConfigVar>()
 				val configNumber = alloc<EGLintVar>()
-				check(eglChooseConfig(display, configAttribs.ptr, configVar.ptr, 1.convert(), configNumber.ptr) == EGL_TRUE.toUInt() && configNumber.value == 1) {
+				check(eglChooseConfig(display, configAttributes.ptr, configVar.ptr, 1.convert(), configNumber.ptr) == EGL_TRUE.toUInt() && configNumber.value == 1) {
 					"Failed to choose EGL config: ${configNumber.value}"
 				}
 				println("Chose EGL config: ${configNumber.value}")
@@ -112,11 +105,11 @@ internal class Gl private constructor(
 					"Failed to obtain EGL config"
 				}
 
-				val contextAttribs = cValuesOf(
+				val contextAttributes = cValuesOf(
 						EGL_CONTEXT_CLIENT_VERSION, 2,
 						EGL_NONE
 				)
-				val context = eglCreateContext(display, config, EGL_NO_CONTEXT, contextAttribs.ptr)
+				val context = eglCreateContext(display, config, EGL_NO_CONTEXT, contextAttributes.ptr)
 					.checkNotNull { "Failed to create EGL context" }
 					.scopedUseWithClose("Destroying EGL context") { eglDestroyContext(display, it) }
 				println("Created EGL context")
