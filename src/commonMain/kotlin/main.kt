@@ -71,7 +71,7 @@ private const val KEY_DEVICE = "/dev/input/event3"
 private class State(
 	val drm: Drm,
 	val gbm: Gbm,
-	val gl: Gl,
+	val egl: Egl,
 	val context: DirectContext,
 	var thisBo: CPointer<gbm_bo>,
 	var lastBo: CPointer<gbm_bo>?,
@@ -83,11 +83,11 @@ fun main() = closeFinallyScope {
 		val keys = KeyInput.initialize(KEY_DEVICE).useInScope()
 		val drm = Drm.initialize(RENDER_DEVICE).useInScope()
 		val gbm = Gbm.initialize(drm).useInScope()
-		val gl = Gl.initialize(gbm).useInScope()
+		val egl = Egl.initialize(gbm).useInScope()
 
 		glClearColor(0.5f, 0.5f, 0.5f, 1.0f)
 		glClear(GL_COLOR_BUFFER_BIT.toUInt())
-		eglSwapBuffers(gl.display, gl.surface)
+		eglSwapBuffers(egl.display, egl.surface)
 
 		val firstBo = checkNotNull(gbm_surface_lock_front_buffer(gbm.surfacePtr)) {
 			"Unable to lock first GBM surface front buffer"
@@ -121,7 +121,7 @@ fun main() = closeFinallyScope {
 		val state = State(
 			drm = drm,
 			gbm = gbm,
-			gl = gl,
+			egl = egl,
 			context = context,
 			thisBo = firstBo,
 			lastBo = null,
@@ -191,7 +191,7 @@ private fun renderFrame(fd: Int, data: COpaquePointer, state: State) {
 
 	draw(state)
 
-	eglSwapBuffers(state.gl.display, state.gl.surface)
+	eglSwapBuffers(state.egl.display, state.egl.surface)
 	val nextBo = checkNotNull(gbm_surface_lock_front_buffer(state.gbm.surfacePtr)) {
 		"Unable to lock next GBM surface front buffer"
 	}

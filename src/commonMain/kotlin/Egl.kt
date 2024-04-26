@@ -51,7 +51,7 @@ import lightswitch.eglQueryString
 import lightswitch.eglTerminate
 import lightswitch.glGetString
 
-internal class Gl private constructor(
+internal class Egl private constructor(
 	private val closer: Closer,
 	val display: EGLDisplay,
 	val config: EGLConfig,
@@ -59,7 +59,7 @@ internal class Gl private constructor(
 	val surface: EGLSurface,
 ) : AutoCloseable by closer {
 	companion object {
-		fun initialize(gbm: Gbm): Gl = closeOnThrowScope {
+		fun initialize(gbm: Gbm): Egl = closeOnThrowScope {
 			memScoped {
 				@Suppress("UNCHECKED_CAST") // Types from https://registry.khronos.org/EGL/extensions/EXT/EGL_EXT_platform_base.txt
 				val getPlatformDisplay = eglGetProcAddress("eglGetPlatformDisplayEXT")
@@ -121,7 +121,7 @@ internal class Gl private constructor(
 
 				println("GL Extensions: " + glGetString(GL_EXTENSIONS.toUInt())!!.reinterpret<ByteVar>().toKString())
 
-				Gl(
+				Egl(
 					closer = closer,
 					display = display,
 					config = config,
