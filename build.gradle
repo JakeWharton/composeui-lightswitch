@@ -1,4 +1,4 @@
-import static org.jetbrains.kotlin.gradle.plugin.AbstractKotlinPluginKt.PLUGIN_CLASSPATH_CONFIGURATION_NAME
+import static org.jetbrains.kotlin.gradle.plugin.AbstractKotlinPluginKt.NATIVE_COMPILER_PLUGIN_CLASSPATH_CONFIGURATION_NAME
 
 buildscript {
 	repositories {
@@ -51,11 +51,14 @@ kotlin {
 			dependencies {
 				implementation libs.jetbrains.compose.runtime
 				implementation 'org.jetbrains.skiko:skiko-linuxarm64:0.0.0-SNAPSHOT'
+				implementation 'org.jetbrains.compose.material3:material3:0.0.0-SNAPSHOT'
 			}
 		}
 	}
 
 	sourceSets.configureEach {
+		languageSettings.optIn("androidx.compose.runtime.InternalComposeApi")
+		languageSettings.optIn("androidx.compose.ui.InternalComposeUiApi")
 		languageSettings.optIn("kotlin.ExperimentalStdlibApi")
 		languageSettings.optIn("kotlin.contracts.ExperimentalContracts")
 		languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")
@@ -63,7 +66,7 @@ kotlin {
 }
 
 dependencies {
-	add(PLUGIN_CLASSPATH_CONFIGURATION_NAME, libs.jetbrains.compose.compiler)
+	add(NATIVE_COMPILER_PLUGIN_CLASSPATH_CONFIGURATION_NAME, libs.jetbrains.compose.compiler)
 }
 
 apply plugin: 'com.diffplug.spotless'
@@ -74,6 +77,7 @@ spotless {
 		ktlint(libs.ktlint.core.get().version)
 			.editorConfigOverride([
 				'ktlint_standard_filename': 'disabled',
+				'ktlint_function_naming_ignore_when_annotated_with': 'Composable',
 			])
 			.customRuleSets([
 				libs.ktlint.composeRules.get().toString(),

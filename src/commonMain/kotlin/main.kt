@@ -1,3 +1,19 @@
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.LocalSystemTheme
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.SystemTheme
+import androidx.compose.ui.graphics.asComposeCanvas
+import androidx.compose.ui.scene.ComposeScene
+import androidx.compose.ui.scene.MultiLayerComposeScene
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.StableRef
@@ -45,15 +61,11 @@ import org.jetbrains.skia.BackendRenderTarget
 import org.jetbrains.skia.Color
 import org.jetbrains.skia.ColorSpace
 import org.jetbrains.skia.DirectContext
-import org.jetbrains.skia.Font
 import org.jetbrains.skia.FramebufferFormat
-import org.jetbrains.skia.Paint
 import org.jetbrains.skia.Surface
 import org.jetbrains.skia.SurfaceColorFormat
 import org.jetbrains.skia.SurfaceOrigin
 import org.jetbrains.skia.SurfaceProps
-import org.jetbrains.skia.TextLine
-import org.jetbrains.skia.Typeface
 import platform.posix.FD_SETSIZE
 import platform.posix.calloc
 import platform.posix.errno
@@ -75,6 +87,7 @@ private class State(
 	val context: DirectContext,
 	var thisBo: CPointer<gbm_bo>,
 	var lastBo: CPointer<gbm_bo>?,
+	val scene: ComposeScene,
 )
 
 fun main() = closeFinallyScope {
@@ -84,6 +97,30 @@ fun main() = closeFinallyScope {
 		val drm = Drm.initialize(RENDER_DEVICE).useInScope()
 		val gbm = Gbm.initialize(drm).useInScope()
 		val egl = Egl.initialize(gbm).useInScope()
+
+		val width: Int
+		val height: Int
+		drm.modeInfo.useContents {
+			width = hdisplay.convert()
+			height = vdisplay.convert()
+		}
+
+		val scene = MultiLayerComposeScene(
+			size = IntSize(
+				width = width,
+				height = height,
+			)
+		)
+		scene.setContent {
+			CompositionLocalProvider(LocalSystemTheme provides SystemTheme.Dark) {
+				var count by remember { mutableIntStateOf(0) }
+				Button(
+					onClick = { count++ },
+					modifier = Modifier.padding(16.dp).fillMaxSize()
+				) {
+				}
+			}
+		}
 
 		glClearColor(0.5f, 0.5f, 0.5f, 1.0f)
 		glClear(GL_COLOR_BUFFER_BIT.toUInt())
@@ -125,6 +162,7 @@ fun main() = closeFinallyScope {
 			context = context,
 			thisBo = firstBo,
 			lastBo = null,
+			scene = scene,
 		)
 		closer += {
 			state.lastBo?.let { lastBo ->
@@ -244,16 +282,8 @@ private fun draw(state: State) {
 
 	val canvas = surface.canvas
 
-	canvas.clear(Color.RED)
-
-	val bluePaint = Paint().apply { color = Color.BLUE }
-	canvas.drawCircle(50f, 50f, 100f, bluePaint)
-
-	val greenPaint = Paint().apply { color = Color.GREEN }
-	canvas.drawLine(10f, 10f, 110f, 110f, greenPaint)
-
-	val blackPaint = Paint().apply { color = Color.BLACK }
-	canvas.drawTextLine(TextLine.make("Skia", Font(Typeface.makeDefault(), 50f)), 10f, 250f, blackPaint)
+	canvas.clear(Color.BLACK)
+	state.scene.render(canvas.asComposeCanvas(), 0L)
 
 	surface.flushAndSubmit()
 	surface.close()
