@@ -51,7 +51,7 @@ kotlin {
 			dependencies {
 				implementation libs.jetbrains.compose.runtime
 				implementation 'org.jetbrains.skiko:skiko-linuxarm64:0.0.0-SNAPSHOT'
-				implementation 'org.jetbrains.compose.material3:material3:0.0.0-SNAPSHOT'
+				implementation 'org.jetbrains.compose.material3:material3:1.6.2'
 			}
 		}
 	}
