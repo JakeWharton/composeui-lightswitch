@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asComposeCanvas
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.PointerType
+import androidx.compose.ui.platform.ComposeUiMainDispatcher
 import androidx.compose.ui.scene.ComposeScene
 import androidx.compose.ui.scene.MultiLayerComposeScene
 import androidx.compose.ui.unit.IntSize
@@ -124,6 +125,7 @@ fun main() = closeFinallyScope {
 				width = width,
 				height = height,
 			),
+			coroutineContext = ComposeUiMainDispatcher,
 		)
 		scene.setContent {
 			CompositionLocalProvider(LocalSystemTheme provides SystemTheme.Dark) {
