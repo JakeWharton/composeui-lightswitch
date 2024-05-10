@@ -172,7 +172,7 @@ fun main() = closeFinallyScope {
 		eventContext.page_flip_handler = staticCFunction(::pageFlipHandler)
 
 		val context = DirectContext.makeEGL()
-		closer += context::close
+			.scopedUseWithClose("Closing EGL context", DirectContext::close)
 
 		val state = State(
 			drm = drm,
