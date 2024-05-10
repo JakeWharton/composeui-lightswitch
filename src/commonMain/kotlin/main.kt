@@ -1,19 +1,26 @@
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.LocalSystemTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.SystemTheme
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asComposeCanvas
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.PointerType
 import androidx.compose.ui.scene.ComposeScene
 import androidx.compose.ui.scene.MultiLayerComposeScene
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import kotlin.random.Random
 import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.StableRef
@@ -29,8 +36,14 @@ import kotlinx.cinterop.sizeOf
 import kotlinx.cinterop.staticCFunction
 import kotlinx.cinterop.toKString
 import kotlinx.cinterop.value
+import lightswitch.ABS_MT_POSITION_X
+import lightswitch.ABS_MT_POSITION_Y
+import lightswitch.BTN_TOUCH
 import lightswitch.DRM_EVENT_CONTEXT_VERSION
 import lightswitch.DRM_MODE_PAGE_FLIP_EVENT
+import lightswitch.EV_ABS
+import lightswitch.EV_KEY
+import lightswitch.EV_SYN
 import lightswitch.GL_COLOR_BUFFER_BIT
 import lightswitch.drmEventContext
 import lightswitch.drmHandleEvent
@@ -58,7 +71,7 @@ import lightswitch.select_fd_isset
 import lightswitch.select_fd_set
 import lightswitch.select_fd_zero
 import org.jetbrains.skia.BackendRenderTarget
-import org.jetbrains.skia.Color
+import org.jetbrains.skia.Color as SkiaColor
 import org.jetbrains.skia.ColorSpace
 import org.jetbrains.skia.DirectContext
 import org.jetbrains.skia.FramebufferFormat
@@ -66,6 +79,7 @@ import org.jetbrains.skia.Surface
 import org.jetbrains.skia.SurfaceColorFormat
 import org.jetbrains.skia.SurfaceOrigin
 import org.jetbrains.skia.SurfaceProps
+import org.jetbrains.skiko.currentNanoTime
 import platform.posix.FD_SETSIZE
 import platform.posix.calloc
 import platform.posix.errno
@@ -109,16 +123,19 @@ fun main() = closeFinallyScope {
 			size = IntSize(
 				width = width,
 				height = height,
-			)
+			),
 		)
 		scene.setContent {
 			CompositionLocalProvider(LocalSystemTheme provides SystemTheme.Dark) {
-				var count by remember { mutableIntStateOf(0) }
+				val initialColor = MaterialTheme.colorScheme.surface
+				var color by remember { mutableStateOf(initialColor) }
 				Button(
-					onClick = { count++ },
-					modifier = Modifier.padding(16.dp).fillMaxSize()
-				) {
-				}
+					onClick = {
+						color = Color(Random.nextInt(0xFFFFFF) or 0xFF000000.toInt())
+					},
+					colors = ButtonDefaults.buttonColors(containerColor = color),
+					modifier = Modifier.padding(16.dp).fillMaxSize(),
+				) {}
 			}
 		}
 
@@ -180,6 +197,11 @@ fun main() = closeFinallyScope {
 		val fds = alloc<fd_set>()
 		select_fd_zero(fds.ptr)
 
+		var isButtonDown = false
+		var nextButtonUp = false
+		var nextX = 0
+		var nextY = 0
+
 		while (true) {
 			select_fd_set(drm.fd, fds.ptr)
 			select_fd_set(touch.fd, fds.ptr)
@@ -195,6 +217,51 @@ fun main() = closeFinallyScope {
 					"Touch FD read too few bytes: $size < $eventSize"
 				}
 				println("Touch! type: ${event.type}, code: ${event.code}, value: ${event.value}, time: ${event.time.tv_sec}.${event.time.tv_usec}")
+				when (event.type.convert<Int>()) {
+					EV_ABS -> {
+						when (event.code.convert<Int>()) {
+							ABS_MT_POSITION_X -> {
+								nextX = event.value
+							}
+							ABS_MT_POSITION_Y -> {
+								nextY = event.value
+							}
+						}
+					}
+					EV_KEY -> {
+						when (event.code.convert<Int>()) {
+							BTN_TOUCH -> {
+								when (event.value) {
+									0 -> {
+										nextButtonUp = true
+									}
+								}
+							}
+						}
+					}
+					EV_SYN -> {
+						when (event.code.convert<Int>()) {
+							0 -> {
+								val eventType = when {
+									!isButtonDown -> PointerEventType.Press
+									nextButtonUp -> PointerEventType.Release
+									else -> PointerEventType.Move
+								}
+								val position = Offset(nextX.toFloat(), nextY.toFloat())
+								val timeMillis = event.time.tv_sec * 1000 + event.time.tv_usec / 1000
+								println("Send $eventType at $position")
+								scene.sendPointerEvent(
+									eventType = eventType,
+									position = position,
+									type = PointerType.Touch,
+									timeMillis = timeMillis,
+								)
+								isButtonDown = !nextButtonUp
+								nextButtonUp = false
+							}
+						}
+					}
+				}
 			}
 
 			if (select_fd_isset(keys.fd, fds.ptr) != 0) {
@@ -282,8 +349,8 @@ private fun draw(state: State) {
 
 	val canvas = surface.canvas
 
-	canvas.clear(Color.BLACK)
-	state.scene.render(canvas.asComposeCanvas(), 0L)
+	canvas.clear(SkiaColor.BLACK)
+	state.scene.render(canvas.asComposeCanvas(), currentNanoTime())
 
 	surface.flushAndSubmit()
 	surface.close()
