@@ -11,10 +11,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.LocalSystemTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.SystemTheme
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asComposeCanvas
-import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.PointerType
 import androidx.compose.ui.platform.ComposeUiMainDispatcher
 import androidx.compose.ui.scene.ComposeScene
@@ -37,14 +35,8 @@ import kotlinx.cinterop.sizeOf
 import kotlinx.cinterop.staticCFunction
 import kotlinx.cinterop.toKString
 import kotlinx.cinterop.value
-import lightswitch.ABS_MT_POSITION_X
-import lightswitch.ABS_MT_POSITION_Y
-import lightswitch.BTN_TOUCH
 import lightswitch.DRM_EVENT_CONTEXT_VERSION
 import lightswitch.DRM_MODE_PAGE_FLIP_EVENT
-import lightswitch.EV_ABS
-import lightswitch.EV_KEY
-import lightswitch.EV_SYN
 import lightswitch.GL_COLOR_BUFFER_BIT
 import lightswitch.drmEventContext
 import lightswitch.drmHandleEvent
@@ -107,7 +99,7 @@ private class State(
 
 fun main() = closeFinallyScope {
 	memScoped {
-		val touch = TouchInput.initialize(TOUCH_DEVICE).useInScope()
+		val touch = openTouchInputDevice(TOUCH_DEVICE)
 		val keys = KeyInput.initialize(KEY_DEVICE).useInScope()
 		val drm = Drm.initialize(RENDER_DEVICE).useInScope()
 		val gbm = Gbm.initialize(drm).useInScope()
@@ -199,11 +191,6 @@ fun main() = closeFinallyScope {
 		val fds = alloc<fd_set>()
 		select_fd_zero(fds.ptr)
 
-		var isButtonDown = false
-		var nextButtonUp = false
-		var nextX = 0
-		var nextY = 0
-
 		while (true) {
 			select_fd_set(drm.fd, fds.ptr)
 			select_fd_set(touch.fd, fds.ptr)
@@ -219,50 +206,14 @@ fun main() = closeFinallyScope {
 					"Touch FD read too few bytes: $size < $eventSize"
 				}
 				println("Touch! type: ${event.type}, code: ${event.code}, value: ${event.value}, time: ${event.time.tv_sec}.${event.time.tv_usec}")
-				when (event.type.convert<Int>()) {
-					EV_ABS -> {
-						when (event.code.convert<Int>()) {
-							ABS_MT_POSITION_X -> {
-								nextX = event.value
-							}
-							ABS_MT_POSITION_Y -> {
-								nextY = event.value
-							}
-						}
-					}
-					EV_KEY -> {
-						when (event.code.convert<Int>()) {
-							BTN_TOUCH -> {
-								when (event.value) {
-									0 -> {
-										nextButtonUp = true
-									}
-								}
-							}
-						}
-					}
-					EV_SYN -> {
-						when (event.code.convert<Int>()) {
-							0 -> {
-								val eventType = when {
-									!isButtonDown -> PointerEventType.Press
-									nextButtonUp -> PointerEventType.Release
-									else -> PointerEventType.Move
-								}
-								val position = Offset(nextX.toFloat(), nextY.toFloat())
-								val timeMillis = event.time.tv_sec * 1000 + event.time.tv_usec / 1000
-								println("Send $eventType at $position")
-								scene.sendPointerEvent(
-									eventType = eventType,
-									position = position,
-									type = PointerType.Touch,
-									timeMillis = timeMillis,
-								)
-								isButtonDown = !nextButtonUp
-								nextButtonUp = false
-							}
-						}
-					}
+				touch.process(event)?.let { touchEvent ->
+					println("Send $touchEvent")
+					scene.sendPointerEvent(
+						eventType = touchEvent.eventType,
+						position = touchEvent.position,
+						timeMillis = touchEvent.timeMillis,
+						type = PointerType.Touch,
+					)
 				}
 			}
 

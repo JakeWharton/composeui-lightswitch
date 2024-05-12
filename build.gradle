@@ -54,6 +54,11 @@ kotlin {
 				implementation 'org.jetbrains.compose.material3:material3:0.0.0-SNAPSHOT'
 			}
 		}
+		commonTest {
+			dependencies {
+				implementation libs.assertk
+			}
+		}
 	}
 
 	sourceSets.configureEach {
