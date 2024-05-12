@@ -100,7 +100,7 @@ private class State(
 fun main() = closeFinallyScope {
 	memScoped {
 		val touch = openTouchInputDevice(TOUCH_DEVICE)
-		val keys = KeyInput.initialize(KEY_DEVICE).useInScope()
+		val keys = openKeyInputDevice(KEY_DEVICE)
 		val drm = Drm.initialize(RENDER_DEVICE).useInScope()
 		val gbm = Gbm.initialize(drm).useInScope()
 		val egl = Egl.initialize(gbm).useInScope()
@@ -223,6 +223,9 @@ fun main() = closeFinallyScope {
 					"Key FD read too few bytes: $size < $eventSize"
 				}
 				println("Key! type: ${event.type}, code: ${event.code}, value: ${event.value}, time: ${event.time.tv_sec}.${event.time.tv_usec}")
+				keys.process(event)?.let { keyEvent ->
+					scene.sendKeyEvent(keyEvent)
+				}
 			}
 
 			if (select_fd_isset(drm.fd, fds.ptr) != 0) {
