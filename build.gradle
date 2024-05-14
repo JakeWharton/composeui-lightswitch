@@ -6,11 +6,13 @@ buildscript {
 	}
 	dependencies {
 		classpath libs.kotlin.gradlePlugin
+		classpath libs.kotlin.serializationPlugin
 		classpath libs.spotless.gradlePlugin
 	}
 }
 
 apply plugin: 'org.jetbrains.kotlin.multiplatform'
+apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
 
 kotlin {
 	linuxArm64 {
@@ -52,6 +54,8 @@ kotlin {
 				implementation libs.jetbrains.compose.runtime
 				implementation 'org.jetbrains.skiko:skiko-linuxarm64:0.0.0-SNAPSHOT'
 				implementation 'org.jetbrains.compose.material3:material3:0.0.0-SNAPSHOT'
+				implementation libs.ktor.network
+				implementation libs.kotlinx.serialization.json
 			}
 		}
 		commonTest {

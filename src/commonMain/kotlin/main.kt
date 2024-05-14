@@ -4,6 +4,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,6 +21,7 @@ import androidx.compose.ui.scene.MultiLayerComposeScene
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import kotlin.random.Random
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
 import kotlinx.cinterop.StableRef
@@ -35,6 +37,7 @@ import kotlinx.cinterop.sizeOf
 import kotlinx.cinterop.staticCFunction
 import kotlinx.cinterop.toKString
 import kotlinx.cinterop.value
+import kotlinx.coroutines.delay
 import lightswitch.DRM_EVENT_CONTEXT_VERSION
 import lightswitch.DRM_MODE_PAGE_FLIP_EVENT
 import lightswitch.GL_COLOR_BUFFER_BIT
@@ -86,6 +89,7 @@ import platform.posix.uint32_tVar
 private const val RENDER_DEVICE = "/dev/dri/card0"
 private const val TOUCH_DEVICE = "/dev/input/event1"
 private const val KEY_DEVICE = "/dev/input/event3"
+private const val EMBER_HOST_UDS = "/oem/ember-host/data/dm_socket_api.uds"
 
 private class State(
 	val drm: Drm,
@@ -104,6 +108,7 @@ fun main() = closeFinallyScope {
 		val drm = Drm.initialize(RENDER_DEVICE).useInScope()
 		val gbm = Gbm.initialize(drm).useInScope()
 		val egl = Egl.initialize(gbm).useInScope()
+		val emberHost = EmberHost(EMBER_HOST_UDS)
 
 		val width: Int
 		val height: Int
@@ -119,7 +124,16 @@ fun main() = closeFinallyScope {
 			),
 			coroutineContext = ComposeUiMainDispatcher,
 		)
+
+		val status = mutableStateOf(false)
+
 		scene.setContent {
+			LaunchedEffect(Unit) {
+				while (true) {
+					status.value = emberHost.getStatus()
+					delay(1.seconds)
+				}
+			}
 			CompositionLocalProvider(LocalSystemTheme provides SystemTheme.Dark) {
 				val initialColor = MaterialTheme.colorScheme.surface
 				var color by remember { mutableStateOf(initialColor) }
