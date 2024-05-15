@@ -68,6 +68,7 @@ kotlin {
 	sourceSets.configureEach {
 		languageSettings.optIn("androidx.compose.runtime.InternalComposeApi")
 		languageSettings.optIn("androidx.compose.ui.InternalComposeUiApi")
+		languageSettings.optIn("androidx.compose.ui.text.ExperimentalTextApi")
 		languageSettings.optIn("kotlin.ExperimentalStdlibApi")
 		languageSettings.optIn("kotlin.contracts.ExperimentalContracts")
 		languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")

@@ -3,6 +3,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,8 +19,11 @@ import androidx.compose.ui.input.pointer.PointerType
 import androidx.compose.ui.platform.ComposeUiMainDispatcher
 import androidx.compose.ui.scene.ComposeScene
 import androidx.compose.ui.scene.MultiLayerComposeScene
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.platform.SystemFont
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.cinterop.COpaquePointer
@@ -125,12 +129,12 @@ fun main() = closeFinallyScope {
 			coroutineContext = ComposeUiMainDispatcher,
 		)
 
-		val status = mutableStateOf(false)
+		var status by mutableStateOf(false)
 
 		scene.setContent {
 			LaunchedEffect(Unit) {
 				while (true) {
-					status.value = emberHost.getStatus()
+					status = emberHost.getStatus()
 					delay(1.seconds)
 				}
 			}
@@ -143,7 +147,13 @@ fun main() = closeFinallyScope {
 					},
 					colors = ButtonDefaults.buttonColors(containerColor = color),
 					modifier = Modifier.padding(16.dp).fillMaxSize(),
-				) {}
+				) {
+					Text(
+						if (status) "ON" else "OFF",
+						fontSize = 50.sp,
+						fontFamily = FontFamily(SystemFont("NanumGothic")),
+					)
+				}
 			}
 		}
 
