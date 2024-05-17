@@ -1,0 +1,141 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../ui-text/0.0.0-SNAPSHOT/ui-text-0.0.0-SNAPSHOT.module",
+    "group": "org.jetbrains.compose.ui",
+    "module": "ui-text",
+    "version": "0.0.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.0"
+    }
+  },
+  "variants": [
+    {
+      "name": "linuxArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.compose.annotation-internal",
+          "module": "annotation",
+          "version": {
+            "requires": "1.6.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.runtime",
+          "module": "runtime",
+          "version": {
+            "requires": "1.6.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.runtime",
+          "module": "runtime-saveable",
+          "version": {
+            "requires": "1.6.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui-geometry",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui-graphics",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui-unit",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui-util",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.9.23"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "atomicfu",
+          "version": {
+            "requires": "0.23.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.8.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.skiko",
+          "module": "skiko-linuxarm64",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "ui-text.klib",
+          "url": "ui-text-linuxarm64-0.0.0-SNAPSHOT.klib",
+          "size": 666120,
+          "sha512": "a05aa9967eb5ea77c9a8f7cce9e43c45cef6fba2f13f48677972d3e70746eb9ac5849e5102889cf9106b8df9938b42843cb86f9aeb34d1c430cef0e1e541f467",
+          "sha256": "f616bb37b534ffdd6e277eb8e6c044c80ab8ab1812c178a6dae72ee36540d714",
+          "sha1": "4405b65639386c7a57d5c77801b66a56288aeee5",
+          "md5": "50b3cc45890873e76570c59f937afe48"
+        }
+      ]
+    },
+    {
+      "name": "linuxArm64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "files": [
+        {
+          "name": "ui-text-linuxarm64-0.0.0-SNAPSHOT-sources.jar",
+          "url": "ui-text-linuxarm64-0.0.0-SNAPSHOT-sources.jar",
+          "size": 220119,
+          "sha512": "3c5ebab1e8aaefdf81e3031fd373a39fd41e287f52702ed0e328f2d8d6acbf0320485078c8b49c9eee1e333fce6ec7e3e0e8659fd7657134364884ea638fd76a",
+          "sha256": "c4a0331084cf461c2214f5fbc4ce633adba6e8cfb8205c2b9b985666332b2118",
+          "sha1": "6a20d00e11752ca5f1c4d623e254cb73e2d305d6",
+          "md5": "f136860ce8be5330e91d397ee16f954b"
+        }
+      ]
+    }
+  ]
+}

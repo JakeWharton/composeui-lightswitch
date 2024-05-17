@@ -1,0 +1,99 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../material-ripple/0.0.0-SNAPSHOT/material-ripple-0.0.0-SNAPSHOT.module",
+    "group": "org.jetbrains.compose.material",
+    "module": "material-ripple",
+    "version": "0.0.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.0"
+    }
+  },
+  "variants": [
+    {
+      "name": "linuxArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.compose.animation",
+          "module": "animation",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.foundation",
+          "module": "foundation",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.runtime",
+          "module": "runtime",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui-util",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.9.23"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "material-ripple.klib",
+          "url": "material-ripple-linuxarm64-0.0.0-SNAPSHOT.klib",
+          "size": 43631,
+          "sha512": "7a582a92c7b24c7e880c979431ec802dfbf002b0f9c043c28e919eff5c7d1e1514c5e52a1615fed344738d1383753a836355a2b47895192b6d152f311aaa9a10",
+          "sha256": "1cba380bf7dc32cd3d8ae4c2f31c6c6aae109147d93bfd71cf863ef49a4e612b",
+          "sha1": "ffab7e0606f9c67d1f595b7b5b8f6ded11e7e804",
+          "md5": "6248842bd69639fb0693568d2fdd9834"
+        }
+      ]
+    },
+    {
+      "name": "linuxArm64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "files": [
+        {
+          "name": "material-ripple-linuxarm64-0.0.0-SNAPSHOT-sources.jar",
+          "url": "material-ripple-linuxarm64-0.0.0-SNAPSHOT-sources.jar",
+          "size": 12487,
+          "sha512": "f76b494c53f71af435becfbb505ca48e860fd4e6396c81935bcf05aedfc1c872c1726aa0c17e49db5da9de2fb70c953f55b65353a650aed6b9baec8698658235",
+          "sha256": "bc418cbbf208abe651944c538c8e12d09a0f3080a453c6d9a735116f2f5229e5",
+          "sha1": "e4236997504ba42b5ccfa4298dbc257591812037",
+          "md5": "111074832ce8be1f93e75c21cc1c5bf0"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "org.jetbrains.compose.animation",
+    "module": "animation-core",
+    "version": "0.0.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.0"
+    }
+  },
+  "variants": [
+    {
+      "name": "metadataApiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-metadata",
+        "org.jetbrains.kotlin.platform.type": "common"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.8.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "animation-core-metadata-0.0.0-SNAPSHOT.jar",
+          "url": "animation-core-0.0.0-SNAPSHOT.jar",
+          "size": 770,
+          "sha512": "a1bc351279607ac864bc2dbd624878ef15bfbc6744b76cc82be495211bba0b0ee94492ac0942158d857415a4130fe34f9ce33af3bedcd454aa1a0c7a524cc5f0",
+          "sha256": "47ced58631698bbd91f0465fd09341069cd73e20cf034bb2d837d3a3b3c8d7f2",
+          "sha1": "c2218b64ff93ad7f7186f9e575ceae27279bf5a8",
+          "md5": "48eccd5672149031da63cd945596c61e"
+        }
+      ]
+    },
+    {
+      "name": "metadataSourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.platform.type": "common"
+      },
+      "files": [
+        {
+          "name": "animation-core-kotlin-0.0.0-SNAPSHOT-sources.jar",
+          "url": "animation-core-0.0.0-SNAPSHOT-sources.jar",
+          "size": 261,
+          "sha512": "1487e5a20c9e4d74f298e07c42e96a61be11b7a768c3fbc199ee138cd68e1fc2267d1cfe3f11f288acc05df755315344d052cc5f6f751f126ab4fe1caa5125ea",
+          "sha256": "c6deada2fac53b8ea6523dbda77597b128006674616f140f04df23264c6d1aa3",
+          "sha1": "2ad14aed781c4a73ed4dbb421966d408a0a06686",
+          "md5": "f43436d6bec321290f6af228ad602604"
+        }
+      ]
+    },
+    {
+      "name": "linuxArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../animation-core-linuxarm64/0.0.0-SNAPSHOT/animation-core-linuxarm64-0.0.0-SNAPSHOT.module",
+        "group": "org.jetbrains.compose.animation",
+        "module": "animation-core-linuxarm64",
+        "version": "0.0.0-SNAPSHOT"
+      }
+    },
+    {
+      "name": "linuxArm64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "available-at": {
+        "url": "../../animation-core-linuxarm64/0.0.0-SNAPSHOT/animation-core-linuxarm64-0.0.0-SNAPSHOT.module",
+        "group": "org.jetbrains.compose.animation",
+        "module": "animation-core-linuxarm64",
+        "version": "0.0.0-SNAPSHOT"
+      }
+    }
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../foundation/0.0.0-SNAPSHOT/foundation-0.0.0-SNAPSHOT.module",
+    "group": "org.jetbrains.compose.foundation",
+    "module": "foundation",
+    "version": "0.0.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.0"
+    }
+  },
+  "variants": [
+    {
+      "name": "linuxArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.compose.animation",
+          "module": "animation",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.annotation-internal",
+          "module": "annotation",
+          "version": {
+            "requires": "1.6.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.collection-internal",
+          "module": "collection",
+          "version": {
+            "requires": "1.6.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.foundation",
+          "module": "foundation-layout",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.runtime",
+          "module": "runtime",
+          "version": {
+            "requires": "1.6.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui-text",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui-util",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.9.23"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "atomicfu",
+          "version": {
+            "requires": "0.23.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.skiko",
+          "module": "skiko-linuxarm64",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "foundation.klib",
+          "url": "foundation-linuxarm64-0.0.0-SNAPSHOT.klib",
+          "size": 2554504,
+          "sha512": "3ac3f582137bf6cf1d39d84ac60fd851bcf865bf54cea5f133b1e337b603252baebc7ffe5ec0f088ec27e7eaa3a82520c13f79d8dfb712c54d3340da5a4db8ed",
+          "sha256": "48b0dc8d0230494c50e706fc29b69f82429c050c96a99a2a83d6875abab8f332",
+          "sha1": "908247f7a497ec4a1d81ccd96465dca35d602a1c",
+          "md5": "47afedea62cc70d370877b0a05a11611"
+        }
+      ]
+    },
+    {
+      "name": "linuxArm64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "files": [
+        {
+          "name": "foundation-linuxarm64-0.0.0-SNAPSHOT-sources.jar",
+          "url": "foundation-linuxarm64-0.0.0-SNAPSHOT-sources.jar",
+          "size": 752841,
+          "sha512": "80ba7ceb8d11411e90402659b331a7046460148c4997bf33119c3bc535aaa02d6c4651c821713d31367b187028faf5abcd60fd26139f0747db5365704983c54f",
+          "sha256": "653e00e239c8d56b7468e29a12b94f2f8ffc4d7f774a73a46d8ecb9f794b821d",
+          "sha1": "a2f1fb02d56504b36cb7cc30d79c4c49c914ab07",
+          "md5": "b68da1b4a3bf5e9402a2223c6157653b"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.jetbrains.compose.animation</groupId>
+  <artifactId>animation-core-linuxarm64</artifactId>
+  <versioning>
+    <latest>0.0.0-SNAPSHOT</latest>
+    <versions>
+      <version>0.0.0-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20240430025138</lastUpdated>
+  </versioning>
+</metadata>

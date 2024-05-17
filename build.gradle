@@ -52,8 +52,8 @@ kotlin {
 		commonMain {
 			dependencies {
 				implementation libs.jetbrains.compose.runtime
-				implementation 'org.jetbrains.skiko:skiko-linuxarm64:0.0.0-SNAPSHOT'
-				implementation 'org.jetbrains.compose.material3:material3:0.0.0-SNAPSHOT'
+				implementation libs.jetbrains.compose.material3
+				implementation libs.skiko
 				implementation libs.ktor.network
 				implementation libs.kotlinx.serialization.json
 			}

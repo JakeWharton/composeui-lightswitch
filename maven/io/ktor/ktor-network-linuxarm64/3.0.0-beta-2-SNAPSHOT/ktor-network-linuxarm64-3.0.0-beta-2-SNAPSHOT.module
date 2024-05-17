@@ -1,0 +1,94 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../ktor-network/3.0.0-beta-2-SNAPSHOT/ktor-network-3.0.0-beta-2-SNAPSHOT.module",
+    "group": "io.ktor",
+    "module": "ktor-network",
+    "version": "3.0.0-beta-2-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.7"
+    }
+  },
+  "variants": [
+    {
+      "name": "linuxArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "io.ktor",
+          "module": "ktor-utils",
+          "version": {
+            "requires": "3.0.0-beta-2-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.8.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.22"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "ktor-network.klib",
+          "url": "ktor-network-linuxarm64-3.0.0-beta-2-SNAPSHOT.klib",
+          "size": 121759,
+          "sha512": "0ad8ce919406f844dcf5f9b57023e799396850663cb55698b48db9c0bd080689a0008eef138c66d91b01eb87ccee22df9493c50a48a8c9f1055c348b39962b48",
+          "sha256": "2828f56e2ec874dc839bbe604dac306d2f3f48bc013b96e39251831141c054a1",
+          "sha1": "84c8e9bec25fa6a4936f17e4d2d37f1d5d23ca13",
+          "md5": "5d5dce3fd77e480e0bbc162160f8bf6f"
+        },
+        {
+          "name": "ktor-network-cinterop-network.klib",
+          "url": "ktor-network-linuxarm64-3.0.0-beta-2-SNAPSHOT-cinterop-network.klib",
+          "size": 9537,
+          "sha512": "5b6d900c87fc541855dbf992e9f1f8278885d478bf577e7a918c1319e95484b92929d657cf96356ffb57d20c76b355896ecbcd56d401a6450f030f277f00fba5",
+          "sha256": "b1f0f7d9d1b46961c1404f13455fa26b34454ccaae326ed1bed4f47f797735d0",
+          "sha1": "6b9288e1fcd0681b90fb620f92e748dab599ba7f",
+          "md5": "58cf4caf28bc662df8b6249353a48697"
+        }
+      ]
+    },
+    {
+      "name": "linuxArm64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "files": [
+        {
+          "name": "ktor-network-linuxarm64-3.0.0-beta-2-SNAPSHOT-sources.jar",
+          "url": "ktor-network-linuxarm64-3.0.0-beta-2-SNAPSHOT-sources.jar",
+          "size": 34062,
+          "sha512": "f5be59782370da203efe2aead24cafb419b3f496ae94e2eff64c7a46d6bc8af19e62f733b771b9b81c23bf75078217fa70598f4db2dd56acb10440d34c307476",
+          "sha256": "03b9b754f86a934b689678195d24d3e6ff7a9cab9d8f0852e961ea77b61fcf3d",
+          "sha1": "83342d7884c561da84203340e035588d22b4cbad",
+          "md5": "ab323b342eb25719336ea2c7dd254845"
+        }
+      ]
+    }
+  ]
+}

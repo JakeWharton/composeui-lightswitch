@@ -1,0 +1,85 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../ui-geometry/0.0.0-SNAPSHOT/ui-geometry-0.0.0-SNAPSHOT.module",
+    "group": "org.jetbrains.compose.ui",
+    "module": "ui-geometry",
+    "version": "0.0.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.0"
+    }
+  },
+  "variants": [
+    {
+      "name": "linuxArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.compose.runtime",
+          "module": "runtime",
+          "version": {
+            "requires": "1.6.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui-util",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.9.23"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "ui-geometry.klib",
+          "url": "ui-geometry-linuxarm64-0.0.0-SNAPSHOT.klib",
+          "size": 52919,
+          "sha512": "112e25c2f1113650b4a62f53c3671e4004ba9b67bd62fef0b1228ffff56d7ad8b0aaf0c6c4d32c23ad98c6b0cb0b6785ca21aa2313c42ea6028c6ea08cf3b108",
+          "sha256": "1e5eb5d0d964d079bf9dd45f71197032f7cc02cca4decc4400b508af3b9a0228",
+          "sha1": "99e2c8aba4c3777f9c001647319edc294372daa5",
+          "md5": "bbc71595273525a23ab19e2e66f00073"
+        }
+      ]
+    },
+    {
+      "name": "linuxArm64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "files": [
+        {
+          "name": "ui-geometry-linuxarm64-0.0.0-SNAPSHOT-sources.jar",
+          "url": "ui-geometry-linuxarm64-0.0.0-SNAPSHOT-sources.jar",
+          "size": 18278,
+          "sha512": "123bacf6f6008e89a5e9a67537bafec4d1491abda0e37f97d7324b9a0ed79aee01561b135709f7a8dd3250ca5378488a25ec52531e519bb692e6fb0b04615bf1",
+          "sha256": "a5d975171d8b48adf860934c3969557a690a7ec261c877018027b4cfd44b7415",
+          "sha1": "2b167ccf642bf99c919cfa98bee1676e8335d1dc",
+          "md5": "761c23e592b64bd9f221b29a05fe81e2"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>org.jetbrains.compose.animation</groupId>
+  <artifactId>animation-linuxarm64</artifactId>
+  <version>0.0.0-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <localCopy>true</localCopy>
+    </snapshot>
+    <lastUpdated>20240430025139</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>klib</extension>
+        <value>0.0.0-SNAPSHOT</value>
+        <updated>20240430025139</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <classifier>sources</classifier>
+        <extension>jar</extension>
+        <value>0.0.0-SNAPSHOT</value>
+        <updated>20240430025139</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>module</extension>
+        <value>0.0.0-SNAPSHOT</value>
+        <updated>20240430025139</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>0.0.0-SNAPSHOT</value>
+        <updated>20240430025139</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>

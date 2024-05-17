@@ -1,6 +1,8 @@
 dependencyResolutionManagement {
 	repositories {
+		maven {
+			url = "file://${rootDir.absolutePath}/maven"
+		}
 		mavenCentral()
-		mavenLocal()
 	}
 }

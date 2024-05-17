@@ -1,0 +1,94 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../ktor-utils/3.0.0-beta-2-SNAPSHOT/ktor-utils-3.0.0-beta-2-SNAPSHOT.module",
+    "group": "io.ktor",
+    "module": "ktor-utils",
+    "version": "3.0.0-beta-2-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.7"
+    }
+  },
+  "variants": [
+    {
+      "name": "linuxArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.8.0"
+          }
+        },
+        {
+          "group": "io.ktor",
+          "module": "ktor-io",
+          "version": {
+            "requires": "3.0.0-beta-2-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "1.9.22"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "ktor-utils.klib",
+          "url": "ktor-utils-linuxarm64-3.0.0-beta-2-SNAPSHOT.klib",
+          "size": 286940,
+          "sha512": "ebfff124a95d9aa6dc27d26fff361349206d5a6e63b5afaa56b3f80e7bd26e2136377bcdc291844a288a9b212fbff072005541a5661b23a75699880f70a44f67",
+          "sha256": "50a4f8a538849accb7c1a18cbc199765e7ea277d27c44b294948fb02c02d7404",
+          "sha1": "4e347b63d6ec9df2cf130d92dd960eae3fe74a81",
+          "md5": "6f864b5e5fe9cb027ca298ce1bd8a741"
+        },
+        {
+          "name": "ktor-utils-cinterop-threadUtils.klib",
+          "url": "ktor-utils-linuxarm64-3.0.0-beta-2-SNAPSHOT-cinterop-threadUtils.klib",
+          "size": 7741,
+          "sha512": "a901b6752efe0224eecbea3dc503f644543a051214ceb6e824846a45fd323d5fea7eb8f7abb6083f48090f1314ce7833bc837c2b46b881ddba09a98951eb2dee",
+          "sha256": "c6e499f976f95650f39a2eff966bbf3d774014f86789f2635658df252194cc4b",
+          "sha1": "78fca6c30d41c23ff1ed46ab4c6239a9463a658e",
+          "md5": "c8479fb3e722433a534865873c0f1574"
+        }
+      ]
+    },
+    {
+      "name": "linuxArm64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "files": [
+        {
+          "name": "ktor-utils-linuxarm64-3.0.0-beta-2-SNAPSHOT-sources.jar",
+          "url": "ktor-utils-linuxarm64-3.0.0-beta-2-SNAPSHOT-sources.jar",
+          "size": 75684,
+          "sha512": "c4a9c21536b5591483418d0483674be2908e51f281ba571bbf6368f4c8650a7a9ebeb559f0579d2169896aac3bcfc77be78b08ee62868a2a053fbf4ae9da9c63",
+          "sha256": "d92f77b0363f17bb60ec9f0a247f30066606b52b02c4c642a6c8909f9fb444c8",
+          "sha1": "557e90ce0e7d4bc201fc4a8f1c6e44a1da101a23",
+          "md5": "780cc92df27a3932b415dcff939f2aef"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.1.0",
+  "buildSystem": "Gradle",
+  "buildSystemVersion": "8.0",
+  "buildPlugin": "org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper",
+  "buildPluginVersion": "1.9.23",
+  "projectSettings": {
+    "isHmppEnabled": true,
+    "isCompatibilityMetadataVariantEnabled": false,
+    "isKPMEnabled": false
+  },
+  "projectTargets": [
+    {
+      "target": "org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget",
+      "platformType": "native",
+      "extras": {
+        "native": {
+          "konanTarget": "linux_arm64",
+          "konanVersion": "1.9.23",
+          "konanAbiVersion": "1.8.0"
+        }
+      }
+    },
+    {
+      "target": "org.jetbrains.kotlin.gradle.plugin.mpp.KotlinMetadataTarget",
+      "platformType": "common"
+    }
+  ]
+}

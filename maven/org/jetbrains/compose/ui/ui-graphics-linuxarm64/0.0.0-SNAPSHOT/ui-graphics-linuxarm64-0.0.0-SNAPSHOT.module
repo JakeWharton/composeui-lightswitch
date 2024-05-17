@@ -1,0 +1,120 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../ui-graphics/0.0.0-SNAPSHOT/ui-graphics-0.0.0-SNAPSHOT.module",
+    "group": "org.jetbrains.compose.ui",
+    "module": "ui-graphics",
+    "version": "0.0.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.0"
+    }
+  },
+  "variants": [
+    {
+      "name": "linuxArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.compose.annotation-internal",
+          "module": "annotation",
+          "version": {
+            "requires": "1.6.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.collection-internal",
+          "module": "collection",
+          "version": {
+            "requires": "1.6.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.runtime",
+          "module": "runtime",
+          "version": {
+            "requires": "1.6.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui-geometry",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui-unit",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui-util",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.9.23"
+          }
+        },
+        {
+          "group": "org.jetbrains.skiko",
+          "module": "skiko-linuxarm64",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "ui-graphics.klib",
+          "url": "ui-graphics-linuxarm64-0.0.0-SNAPSHOT.klib",
+          "size": 484290,
+          "sha512": "fbba24eafb22aa74b7d3ad14d7a742deb4da7398f3b1a286786f9c38dbd70872252fae966bd0d6a8786a83dbf41a8ab364b5524995c42e5b236fa7cc0613aa2a",
+          "sha256": "dcb52b458719b58ab8b4b4b8e62e53b0b26ba1ffacc687c9f41c3915e00c9a07",
+          "sha1": "97de0f63cb67f64c071684f2a56df6b981746f7e",
+          "md5": "3af2c9b9367284aed620c49dc4be5c13"
+        }
+      ]
+    },
+    {
+      "name": "linuxArm64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "files": [
+        {
+          "name": "ui-graphics-linuxarm64-0.0.0-SNAPSHOT-sources.jar",
+          "url": "ui-graphics-linuxarm64-0.0.0-SNAPSHOT-sources.jar",
+          "size": 179399,
+          "sha512": "35428f2cb945227599983eda93eb00e68a1baebe178578aa42e372cc9e14364d80410caa80f3544a6af6d4b32a165e6ce6d5f18c7013448afe09a8fb2827e620",
+          "sha256": "c6bb9aef965d28193468f546c26610644c17215c6ef67a3315982dc6563960d2",
+          "sha1": "9279878ed57e4c1967a1290e6bf142393092e201",
+          "md5": "ed5b967303d1e7929f756d7f810c8484"
+        }
+      ]
+    }
+  ]
+}

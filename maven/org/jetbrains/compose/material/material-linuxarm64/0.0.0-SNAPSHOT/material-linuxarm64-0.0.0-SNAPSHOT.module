@@ -1,0 +1,155 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../material/0.0.0-SNAPSHOT/material-0.0.0-SNAPSHOT.module",
+    "group": "org.jetbrains.compose.material",
+    "module": "material",
+    "version": "0.0.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.0"
+    }
+  },
+  "variants": [
+    {
+      "name": "linuxArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.compose.animation",
+          "module": "animation",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.animation",
+          "module": "animation-core",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.annotation-internal",
+          "module": "annotation",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.foundation",
+          "module": "foundation",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.foundation",
+          "module": "foundation-layout",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.material",
+          "module": "material-icons-core",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.material",
+          "module": "material-ripple",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.runtime",
+          "module": "runtime",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui-text",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui-util",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.9.23"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "atomicfu",
+          "version": {
+            "requires": "0.23.2"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "material.klib",
+          "url": "material-linuxarm64-0.0.0-SNAPSHOT.klib",
+          "size": 1201730,
+          "sha512": "5f8fb9cbf47330e493824dc7377f7c3ab74ed0fc65233e7d4a36d0388fc23e49fcee04efffaf9260c5be172ee3b54de36d07583d3d5c7742de3665d584699659",
+          "sha256": "3349f2a57f237b2786f2415d7b76ca4b895aafbbdffd51f5ad38f50862292d77",
+          "sha1": "62b8161c5056364e79a4617a8f480d0c9f54722e",
+          "md5": "d2b77727501d94a371f46dc903e512e6"
+        }
+      ]
+    },
+    {
+      "name": "linuxArm64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "files": [
+        {
+          "name": "material-linuxarm64-0.0.0-SNAPSHOT-sources.jar",
+          "url": "material-linuxarm64-0.0.0-SNAPSHOT-sources.jar",
+          "size": 310281,
+          "sha512": "8f0df610a99fbc41d288325d371baf2027b3931bd5135124b7af5bcd08411a6e72e81e786207d09362a8b0af6868fbc988043f68a527365b316fdf59d51ce1c5",
+          "sha256": "2d02ad9fb3926871d7597fdc3bac15a7362dc6cb2e495c644c42eabb999fae0b",
+          "sha1": "26094f4bf9f04fc058fd048e2d85b55bb0b66bee",
+          "md5": "d7d5bd9a864700514414b4b079bca5c7"
+        }
+      ]
+    }
+  ]
+}

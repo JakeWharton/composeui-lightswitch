@@ -1,0 +1,92 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../material-icons-core/0.0.0-SNAPSHOT/material-icons-core-0.0.0-SNAPSHOT.module",
+    "group": "org.jetbrains.compose.material",
+    "module": "material-icons-core",
+    "version": "0.0.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.0"
+    }
+  },
+  "variants": [
+    {
+      "name": "linuxArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui-graphics",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.compose.ui",
+          "module": "ui-unit",
+          "version": {
+            "requires": "0.0.0-SNAPSHOT"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.9.23"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "material-icons-core.klib",
+          "url": "material-icons-core-linuxarm64-0.0.0-SNAPSHOT.klib",
+          "size": 354389,
+          "sha512": "cbda6ec0c899d9cb21d87e3765bb6b6ca981cb4e0413998de4e83e238cfc259ad42c71aa95b68acbaf4b86796c71ca0114953c826f6f5c20395ee4715d208001",
+          "sha256": "8a61d20887c4137bf2e08c16582daf12aea48aad66a04781a1d7758df46f1874",
+          "sha1": "09d2ebc4b25bdd6ea5724612fabc7ada0e417cff",
+          "md5": "4ec2cfae26be82cb2c387aa016bee0bc"
+        }
+      ]
+    },
+    {
+      "name": "linuxArm64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "files": [
+        {
+          "name": "material-icons-core-linuxarm64-0.0.0-SNAPSHOT-sources.jar",
+          "url": "material-icons-core-linuxarm64-0.0.0-SNAPSHOT-sources.jar",
+          "size": 284048,
+          "sha512": "2803312f6e4dfb1b2501b44f47eb72fd02212e41a18c5dcbec7b7e280612b486d23b72d50688a2fb3776b1582ae63ec923fd3f39bdbc4e951a779dc133495f64",
+          "sha256": "b3f1be7fda4d13a6d938bb918275ddc143e9d6a2007727f284778480526f5f16",
+          "sha1": "e518df0d8a19c3833f72a24ff667853015e340fd",
+          "md5": "6f8dfe229b864de0e1deaa71ad0c1434"
+        }
+      ]
+    }
+  ]
+}

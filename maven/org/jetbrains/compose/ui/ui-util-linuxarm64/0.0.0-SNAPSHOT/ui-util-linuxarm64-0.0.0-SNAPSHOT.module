@@ -1,0 +1,71 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "url": "../../ui-util/0.0.0-SNAPSHOT/ui-util-0.0.0-SNAPSHOT.module",
+    "group": "org.jetbrains.compose.ui",
+    "module": "ui-util",
+    "version": "0.0.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.0"
+    }
+  },
+  "variants": [
+    {
+      "name": "linuxArm64ApiElements-published",
+      "attributes": {
+        "artifactType": "org.jetbrains.kotlin.klib",
+        "org.gradle.category": "library",
+        "org.gradle.usage": "kotlin-api",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-common",
+          "version": {
+            "requires": "1.9.23"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "ui-util.klib",
+          "url": "ui-util-linuxarm64-0.0.0-SNAPSHOT.klib",
+          "size": 31419,
+          "sha512": "3953d29f47726709d1d2cd61b923443f0bb193fb13fba66ce1ce30c9bf07541c9068e8a8457a50a7d947511cedff7fee29be84f1ab824b9277acb83d9dadc8ae",
+          "sha256": "04adc72a0b2260fe935f1a153e20cd041c0de078d135f427527f31c85459fdcc",
+          "sha1": "f54a59c6a02c7996e2bf0969b53c474ba60f9e52",
+          "md5": "59e17cac43daf9b471f87c3513b70811"
+        }
+      ]
+    },
+    {
+      "name": "linuxArm64SourcesElements-published",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "kotlin-runtime",
+        "org.jetbrains.kotlin.native.target": "linux_arm64",
+        "org.jetbrains.kotlin.platform.type": "native"
+      },
+      "files": [
+        {
+          "name": "ui-util-linuxarm64-0.0.0-SNAPSHOT-sources.jar",
+          "url": "ui-util-linuxarm64-0.0.0-SNAPSHOT-sources.jar",
+          "size": 9660,
+          "sha512": "e6eaeab8c923a8d7641e6a6bb83d56623c29244d57fb12f8331e6d96fb627c59edc4e8cb7ae79ad6e49d4f5cc6a00ddac9eee50c40bfeb3f8bb7f886f975f94b",
+          "sha256": "e22ce3a559fd6ab232b2dda894097ce3e29af1fb594539a2fed85c162e8c0bd0",
+          "sha1": "c7b1c69b92c3db7ef679370cabd59ae6e53582d2",
+          "md5": "45376fb211c029a91070f489acd05440"
+        }
+      ]
+    }
+  ]
+}
