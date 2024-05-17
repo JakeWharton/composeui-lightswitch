@@ -65,11 +65,13 @@ Once connected to the device (see above), there are scripts for quickly testing:
 
 Or for longer deployments:
 
- * `push_debug.sh` builds a debug executable, pushes it to the device, kills the built-in GUI,
+ * `deploy_debug.sh` builds a debug executable, pushes it to the device, kills the built-in GUI,
    backs up the built-in GUI, replaces the GUI with our executable, and tails the logs.
- * `push_release.sh` builds a release executable, pushes it to the device, kills the built-in GUI,
+ * `deploy_release.sh` builds a release executable, pushes it to the device, kills the built-in GUI,
    backs up the built-in GUI, replaces the GUI with our executable, and tails the log.
- * `push_undo.sh` kills our GUI and restores the backup of the built-in GUI.
+ * `deploy_undo.sh` kills our GUI and restores the backup of the built-in GUI.
+
+You must have remounted the `/oem` partition as read-write (as detailed above) before deploying.
 
 Additionally, the `push_debug.sh` and `push_release.sh` scripts will create an additional "original"
 copy of the built-in GUI that is never again touched should you need to restore manually.
