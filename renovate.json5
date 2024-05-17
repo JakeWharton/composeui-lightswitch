@@ -13,4 +13,10 @@
       ],
     },
   ],
+  "ignoreDeps": [
+    // Custom build of https://github.com/JakeWharton/compose-multiplatform-core/tree/jw.linux-arm.2024-04-26
+    "org.jetbrains.compose.material3:material3",
+    // Custom build of https://github.com/JakeWharton/skiko/tree/jw.egl.2024-04-16
+    "org.jetbrains.skiko:skiko-linuxarm64",
+  ]
 }
