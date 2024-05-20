@@ -2,8 +2,8 @@
 
 set -e
 
-rm -rf usr/lib
-mkdir usr/lib
+rm -rf device/lib
+mkdir device/lib
 adb pull \
 	/usr/lib/libGLESv2.so \
 	/usr/lib/libEGL.so \
@@ -11,4 +11,4 @@ adb pull \
 	/usr/lib/libinput.so \
 	/usr/lib/libmali.so \
 	/usr/lib/libfontconfig.so \
-	usr/lib/
+	device/lib/

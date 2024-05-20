@@ -63,8 +63,8 @@ The device ships with the following native libraries:
   I started bisecting the public symbols, but it wasn't yielding good results. I guessed .87 for now.
   In .98 they added a `drmIsMaster` API which is not available, so it's definitely older than that.
 
-The headers for these versions are checked in under `usr/include/`.
+The headers for these versions are checked in under `device/include/`.
 These were obtained by running the `pull_includes.sh` script (which you should not need to do).
 
-The shared libraries for dynamic linking are checked in under `usr/lib/`.
+The shared libraries for dynamic linking are checked in under `device/lib/`.
 These were obtained by running the `pull_libs.sh` script (which you should not need to do).

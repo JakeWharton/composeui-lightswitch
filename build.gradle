@@ -21,7 +21,7 @@ kotlin {
 
 			// Work around https://youtrack.jetbrains.com/issue/KT-48082.
 			linkerOpts(
-				"-L${file("usr/lib").absolutePath}",
+				"-L${file("device/lib").absolutePath}",
 				"-ldrm",
 				"-lmali",
 				"-lfontconfig",
@@ -33,17 +33,17 @@ kotlin {
 			create("lightswitch") {
 				packageName("lightswitch")
 				includeDirs(
-					"usr/include",
-					"usr/include/libdrm",
+					"device/include",
+					"device/include/libdrm",
 				)
-				header("usr/include/GLES2/gl2.h")
-				header("usr/include/GLES2/gl2ext.h")
-				header("usr/include/EGL/egl.h")
-				header("usr/include/EGL/eglext.h")
-				header("usr/include/gbm.h")
-				header("usr/include/input.h")
-				header("usr/include/xf86drm.h")
-				header("usr/include/xf86drmMode.h")
+				header("device/include/GLES2/gl2.h")
+				header("device/include/GLES2/gl2ext.h")
+				header("device/include/EGL/egl.h")
+				header("device/include/EGL/eglext.h")
+				header("device/include/gbm.h")
+				header("device/include/input.h")
+				header("device/include/xf86drm.h")
+				header("device/include/xf86drmMode.h")
 			}
 		}
 	}

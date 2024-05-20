@@ -6,4 +6,4 @@ build
 .idea
 
 # Temporary dir used by pull_includes.sh
-usr/downloads
+device/downloads

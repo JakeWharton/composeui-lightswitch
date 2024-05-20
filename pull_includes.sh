@@ -2,10 +2,10 @@
 
 set -e
 
-rm -rf usr/downloads usr/include
-mkdir usr/downloads usr/include
+rm -rf device/downloads device/include
+mkdir device/downloads device/include
 
-pushd usr/downloads > /dev/null
+pushd device/downloads > /dev/null
 
 echo "Downloading GBM / GLES2 via Mesa…"
 
@@ -35,13 +35,13 @@ curl -L --no-progress-meter https://registry.khronos.org/EGL/api/EGL/eglext.h > 
 curl -L --no-progress-meter https://registry.khronos.org/EGL/api/KHR/khrplatform.h > ../include/KHR/khrplatform.h
 
 popd > /dev/null
-rmdir usr/downloads
+rmdir device/downloads
 
 echo "Downloading libdrm…"
 
-libdrm_image=$(podman build -qf usr/Dockerfile.libdrm)
+libdrm_image=$(podman build -qf device/Dockerfile.libdrm)
 libdrm_container=$(podman run -d $libdrm_image)
-podman cp $libdrm_container:/usr/local/include usr
+podman cp $libdrm_container:/usr/local/include device
 podman rm $libdrm_container > /dev/null
 
 echo "Done"
