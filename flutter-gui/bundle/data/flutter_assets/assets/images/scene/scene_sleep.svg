@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="51px" height="50px" viewBox="0 0 51 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>scene_sleep</title>
+    <g id="scene_sleep" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(0.000000, 0.000000)">
+        <g id="icon_sidoku_Goodnight备份">
+            <path d="M25,7 C26.7603849,7 28.4617467,7.25270773 30.0697875,7.72382531 C25.9353591,9.30523942 23,13.3098248 23,18 C23,24.0751322 27.9248678,29 34,29 C37.7134575,29 40.9971379,27.159906 42.9889775,24.3417819 C42.9960324,24.5597704 43,24.7794218 43,25 C43,34.9411255 34.9411255,43 25,43 C15.0588745,43 7,34.9411255 7,25 C7,15.0588745 15.0588745,7 25,7 Z" id="形状结合" fill="#F7FAFE"></path>
+            <rect id="矩形" x="0" y="0" width="50" height="50"></rect>
+        </g>
+    </g>
+</svg>

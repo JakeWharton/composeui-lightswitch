@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="51px" height="50px" viewBox="0 0 51 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>scene_dining</title>
+    <g id="scene_dining" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(0.000000, 0.000000)">
+        <g id="编组">
+            <rect id="矩形" fill="#F7FAFE" opacity="0.300000012" x="22" y="10" width="6" height="9" rx="1"></rect>
+            <path d="M25,16 C34.3888407,16 42,23.6111593 42,33 L42,35 L42,35 L8,35 L8,33 C8,23.6111593 15.6111593,16 25,16 Z" id="矩形" fill="#F7FAFE"></path>
+            <rect id="矩形" fill="#F7FAFE" opacity="0.300000012" x="11" y="37" width="28" height="3"></rect>
+            <rect id="矩形" x="0" y="0" width="50" height="50"></rect>
+        </g>
+    </g>
+</svg>

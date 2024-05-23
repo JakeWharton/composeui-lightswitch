@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="299px" height="270px" viewBox="0 0 299 270" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>fresh_air3</title>
+    <defs>
+        <linearGradient x1="94.3980774%" y1="0%" x2="38.6389856%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#DD8547" offset="0%"></stop>
+            <stop stop-color="#D15C44" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="52.936447%" y1="0%" x2="49.2485932%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#DC8147" offset="0%"></stop>
+            <stop stop-color="#D15C44" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="fresh_air3" transform="translate(0.225999, 3.000000)" fill-rule="nonzero">
+            <circle id="Oval" stroke="url(#linearGradient-1)" stroke-width="6" cx="148.774001" cy="132" r="132"></circle>
+            <path d="M2.7740012,132.5 C2.7740012,179.858195 24.2205636,222.207277 57.9312475,250.364805 C22.5692118,223.221418 -0.225998801,180.522762 -0.225998801,132.5 C-0.225998801,84.4799563 22.5666309,41.7834164 57.9235723,14.6386984 C24.2180071,42.7977712 2.7740012,85.1446276 2.7740012,132.5 Z" id="形状结合" fill="url(#linearGradient-2)" opacity="0.680478051"></path>
+            <path d="M238.975642,132.5 C238.975642,179.858195 260.422205,222.207277 294.132889,250.364805 C258.770853,223.221418 235.975642,180.522762 235.975642,132.5 C235.975642,84.4799563 258.768272,41.7834164 294.125214,14.6386984 C260.419648,42.7977712 238.975642,85.1446276 238.975642,132.5 Z" id="形状结合备份" fill="url(#linearGradient-2)" opacity="0.680478051" transform="translate(266.874822, 132.631898) scale(-1, 1) translate(-266.874822, -132.631898) "></path>
+        </g>
+    </g>
+</svg>

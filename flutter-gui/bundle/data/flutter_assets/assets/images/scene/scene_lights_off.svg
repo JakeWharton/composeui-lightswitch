@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="51px" height="50px" viewBox="0 0 51 50" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>scene_lights_off</title>
+    <g id="scene_lights_off" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(0.000000, 0.000000)">
+        <g id="编组">
+            <rect id="矩形" fill="#F7FAFE" opacity="0.300000012" x="16" y="33" width="18" height="3"></rect>
+            <rect id="矩形备份" fill="#F7FAFE" opacity="0.300000012" x="20" y="37.5" width="10" height="3"></rect>
+            <path d="M38.7157007,31.0821064 C39.5412704,29.2231392 40,27.1651406 40,25 C40,16.7157288 33.2842712,10 25,10 C16.7157288,10 10,16.7157288 10,25 C10,27.1651027 10.4587135,29.2230671 11.284256,31.0820087 C16.1561853,31.0903332 33.5953175,31.0688849 38.7157007,31.0821064 Z" id="椭圆形" fill="#F7FAFE"></path>
+            <rect id="矩形" x="0" y="0" width="50" height="50"></rect>
+        </g>
+    </g>
+</svg>

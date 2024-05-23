@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="292px" height="292px" viewBox="0 0 292 292" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>refrigeration</title>
+    <defs>
+        <linearGradient x1="80.3538031%" y1="90.1590869%" x2="26.3645958%" y2="5.88074928%" id="linearGradient-1">
+            <stop stop-color="#5DE4FB" offset="0%"></stop>
+            <stop stop-color="#669FFA" offset="69.4404577%"></stop>
+            <stop stop-color="#6C6CFA" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M146,0 C226.633573,0 292,65.3664265 292,146 C292,226.633573 226.633573,292 146,292 C65.3664265,292 0,226.633573 0,146 C0,65.3664265 65.3664265,0 146,0 Z M146,6 C136.791939,6 127.791507,6.88896391 119.079843,8.58575117 C110.813393,11.8065111 105.157154,16.2433858 102.231274,20.067984 C96.9091208,27.0248976 88.3780707,33.9397537 71.9259766,33.9397537 C67.5266461,33.9397537 63.0727124,34.8454876 58.5641757,36.6569553 C26.5206133,62.311588 6,101.759371 6,146 C6,223.319865 68.680135,286 146,286 C223.319865,286 286,223.319865 286,146 C286,68.680135 223.319865,6 146,6 Z" id="refrigeration" fill="url(#linearGradient-1)" fill-rule="nonzero"></path>
+    </g>
+</svg>

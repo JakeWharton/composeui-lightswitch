@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="292px" height="292px" viewBox="0 0 292 292" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>automatic</title>
+    <defs>
+        <linearGradient x1="59.6785133%" y1="100%" x2="28.5614318%" y2="5.90613068%" id="linearGradient-1">
+            <stop stop-color="#7AAEFF" offset="0%"></stop>
+            <stop stop-color="#4768FF" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M146,0 C226.633573,0 292,65.3664265 292,146 C292,226.633573 226.633573,292 146,292 C65.3664265,292 0,226.633573 0,146 C0,65.3664265 65.3664265,0 146,0 Z M146,6 C137.488134,6 129.153688,6.75962157 121.060753,8.21477213 C112.258972,11.4593179 106.271324,16.0941469 103.231274,20.067984 C97.9091208,27.0248976 89.3780707,33.9397537 72.9259766,33.9397537 C67.8311847,33.9397537 62.6631615,35.1544853 57.4219069,37.5839484 C26.0331082,63.2550604 6,102.288039 6,146 C6,223.319865 68.680135,286 146,286 C223.319865,286 286,223.319865 286,146 C286,68.680135 223.319865,6 146,6 Z" id="automatic" fill="url(#linearGradient-1)" fill-rule="nonzero"></path>
+    </g>
+</svg>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="30px" viewBox="0 0 36 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>icon_cloudy_day_s</title>
+    <g id="icon_cloudy_day_s" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon-weather-sunny-day备份-3">
+            <rect id="矩形" x="0" y="0" width="35.64" height="29.7"></rect>
+            <path d="M20.4717857,23.9914286 C25.5683877,23.9914286 29.7,19.8598163 29.7,14.7632143 C29.7,9.66661227 25.5683877,5.535 20.4717857,5.535 C15.3751837,5.535 11.2435714,9.66661227 11.2435714,14.7632143 C11.2435714,16.4752484 11.5232143,19.5513198 12.0825,23.9914286 C15.9896565,23.9914286 18.7860851,23.9914286 20.4717857,23.9914286 Z" id="椭圆形" fill="#CCD4D9"></path>
+            <circle id="椭圆形备份-2" fill="#F0F8FF" cx="11.6678571" cy="18.2635714" r="5.72785714"></circle>
+        </g>
+    </g>
+</svg>
