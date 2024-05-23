@@ -30,6 +30,8 @@ internal class EmberHost(
 	}
 
 	private suspend fun readWrite(value: String): String {
+		println("UDS --> $value")
+
 		// For some reason, we can't read/write multiple lines and instead have to put each
 		// request/response pair on a dedicated "connection" to the UDS.
 		val socket = tcp.connect(uds)
@@ -39,7 +41,9 @@ internal class EmberHost(
 		writer.close(null)
 
 		val reader = socket.openReadChannel()
-		return reader.readRemaining().readUTF8Line().orEmpty()
+		return reader.readRemaining().readUTF8Line().orEmpty().also {
+			println("UDS <-- $it")
+		}
 	}
 
 	@Serializable
