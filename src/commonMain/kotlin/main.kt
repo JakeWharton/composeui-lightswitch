@@ -1,9 +1,3 @@
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -11,20 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.LocalSystemTheme
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.SystemTheme
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asComposeCanvas
 import androidx.compose.ui.input.pointer.PointerType
 import androidx.compose.ui.platform.ComposeUiMainDispatcher
 import androidx.compose.ui.scene.ComposeScene
 import androidx.compose.ui.scene.MultiLayerComposeScene
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.platform.SystemFont
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import kotlin.random.Random
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.cinterop.COpaquePointer
 import kotlinx.cinterop.CPointer
@@ -41,6 +28,8 @@ import kotlinx.cinterop.sizeOf
 import kotlinx.cinterop.staticCFunction
 import kotlinx.cinterop.toKString
 import kotlinx.cinterop.value
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.Channel.Factory.CONFLATED
 import kotlinx.coroutines.delay
 import lightswitch.DRM_EVENT_CONTEXT_VERSION
 import lightswitch.DRM_MODE_PAGE_FLIP_EVENT
@@ -89,6 +78,8 @@ import platform.posix.read
 import platform.posix.select
 import platform.posix.strerror
 import platform.posix.uint32_tVar
+import ui.SwitchDemo
+import ui.SwitchHardware
 
 private const val RENDER_DEVICE = "/dev/dri/card0"
 private const val TOUCH_DEVICE = "/dev/input/event1"
@@ -129,31 +120,39 @@ fun main() = closeFinallyScope {
 			coroutineContext = ComposeUiMainDispatcher,
 		)
 
-		var status by mutableStateOf(false)
-
 		scene.setContent {
+			val relayState = remember { mutableStateOf(false) }
+			val relayWrites = remember { Channel<Boolean>(CONFLATED) }
+			var isWriting by remember { mutableStateOf(false) }
+			LaunchedEffect(Unit) {
+				for (relayWrite in relayWrites) {
+					emberHost.setStatus(relayWrite)
+					isWriting = false
+				}
+			}
+
+			val hardware = remember {
+				object : SwitchHardware {
+					override val relay get() = relayState
+					override fun onChange(value: Boolean) {
+						isWriting = true
+						relayState.value = value
+						relayWrites.trySend(value)
+					}
+				}
+			}
+
 			LaunchedEffect(Unit) {
 				while (true) {
-					status = emberHost.getStatus()
+					if (!isWriting) {
+						relayState.value = emberHost.getStatus()
+					}
 					delay(1.seconds)
 				}
 			}
+
 			CompositionLocalProvider(LocalSystemTheme provides SystemTheme.Dark) {
-				val initialColor = MaterialTheme.colorScheme.surface
-				var color by remember { mutableStateOf(initialColor) }
-				Button(
-					onClick = {
-						color = Color(Random.nextInt(0xFFFFFF) or 0xFF000000.toInt())
-					},
-					colors = ButtonDefaults.buttonColors(containerColor = color),
-					modifier = Modifier.padding(16.dp).fillMaxSize(),
-				) {
-					Text(
-						if (status) "ON" else "OFF",
-						fontSize = 50.sp,
-						fontFamily = FontFamily(SystemFont("NanumGothic")),
-					)
-				}
+				SwitchDemo(hardware)
 			}
 		}
 
