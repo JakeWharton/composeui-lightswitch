@@ -9,7 +9,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
-private const val NODE_ID = "7a41b0411ed9448b9b6eccd14958f197"
+// 1-gang
+// private const val NODE_ID = "7a41b0411ed9448b9b6eccd14958f197"
+// 2-gang
+private const val NODE_ID = "8a4b3b0905ab44e783571a80fe116b32"
 
 internal class EmberHost(
 	path: String,
