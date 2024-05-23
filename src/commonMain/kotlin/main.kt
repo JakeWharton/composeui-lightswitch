@@ -153,6 +153,7 @@ fun main() = closeFinallyScope {
 
 			CompositionLocalProvider(LocalSystemTheme provides SystemTheme.Dark) {
 				SwitchDemo(hardware)
+				// FunButton(hardware)
 			}
 		}
 
