@@ -60,7 +60,7 @@ Once connected to the device (see above), there are scripts for quickly testing:
 
  * `run_debug.sh` build a debug executable, pushes it to the device, kills the built-in GUI,
    and starts our executable (the built-in GUI will come back within 15 seconds).
- * `release.sh` build a release executable, pushes it to the device, kills the built-in GUI,
+ * `run_release.sh` build a release executable, pushes it to the device, kills the built-in GUI,
    and starts our executable (the built-in GUI will come back within 15 seconds).
 
 Or for longer deployments:
