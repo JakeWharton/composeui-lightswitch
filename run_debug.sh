@@ -14,5 +14,7 @@ if [[ "$local_md5" != "$remote_md5" ]]; then
 	adb push build/bin/linuxArm64/debugExecutable/composeui-lightswitch.kexe /userdata
 fi
 
-#adb shell /userdata/composeui-lightswitch.kexe
-adb shell 'killall mixpad_gui && /userdata/composeui-lightswitch.kexe'
+# It might not be running if it crashed, so suppress output.
+adb shell 'killall mixpad_gui > /dev/null 2>&1'
+
+adb shell '/userdata/composeui-lightswitch.kexe'
