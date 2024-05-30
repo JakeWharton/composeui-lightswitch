@@ -1,17 +1,17 @@
-import static org.jetbrains.kotlin.gradle.plugin.AbstractKotlinPluginKt.NATIVE_COMPILER_PLUGIN_CLASSPATH_CONFIGURATION_NAME
-
 buildscript {
 	repositories {
 		mavenCentral()
 	}
 	dependencies {
 		classpath libs.kotlin.gradlePlugin
+		classpath libs.kotlin.composePlugin
 		classpath libs.kotlin.serializationPlugin
 		classpath libs.spotless.gradlePlugin
 	}
 }
 
 apply plugin: 'org.jetbrains.kotlin.multiplatform'
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
 apply plugin: 'org.jetbrains.kotlin.plugin.serialization'
 
 kotlin {
@@ -70,14 +70,9 @@ kotlin {
 		languageSettings.optIn("androidx.compose.runtime.InternalComposeApi")
 		languageSettings.optIn("androidx.compose.ui.InternalComposeUiApi")
 		languageSettings.optIn("androidx.compose.ui.text.ExperimentalTextApi")
-		languageSettings.optIn("kotlin.ExperimentalStdlibApi")
 		languageSettings.optIn("kotlin.contracts.ExperimentalContracts")
 		languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")
 	}
-}
-
-dependencies {
-	add(NATIVE_COMPILER_PLUGIN_CLASSPATH_CONFIGURATION_NAME, libs.jetbrains.compose.compiler)
 }
 
 apply plugin: 'com.diffplug.spotless'

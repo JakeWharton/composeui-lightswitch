@@ -5,5 +5,8 @@ build
 # IntelliJ IDEA
 .idea
 
+# Kotlin
+.kotlin
+
 # Temporary dir used by pull_includes.sh
 device/downloads
