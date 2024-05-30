@@ -2,6 +2,8 @@
 
 set -e
 
+adb shell 'mount -o remount,rw /oem'
+
 # It might not be running if it crashed, so suppress output.
 adb shell 'killall mixpad_gui > /dev/null 2>&1'
 

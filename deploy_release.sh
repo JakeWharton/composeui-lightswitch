@@ -3,7 +3,11 @@
 set -e
 
 ./gradlew -q linkReleaseExecutableLinuxArm64
-adb shell 'killall mixpad_gui'
+adb shell 'mount -o remount,rw /oem'
+
+# It might not be running if it crashed, so suppress output.
+adb shell 'killall mixpad_gui > /dev/null 2>&1'
+
 adb shell 'rm -rf /oem/app/flutter-gui'
 adb shell 'mkdir /oem/app/flutter-gui'
 adb push build/bin/linuxArm64/releaseExecutable/composeui-lightswitch.kexe /oem/app/flutter-gui
