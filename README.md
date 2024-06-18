@@ -6,6 +6,10 @@ Specifically, the **Orvibo MixPad D1**
  * Amazon: https://www.amazon.com/dp/B0B6PDKC64
  * More info: https://community.home-assistant.io/t/500842
 
+ Want to know more? Watch this talk:
+
+<a href="https://youtu.be/D0P5Lb-2uCY"><img src="youtube.png" width="640"/></a>
+
 
 ## Disable automatic updates
 
