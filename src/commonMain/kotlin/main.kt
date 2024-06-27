@@ -31,6 +31,7 @@ import kotlinx.cinterop.value
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.Channel.Factory.CONFLATED
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import lightswitch.DRM_EVENT_CONTEXT_VERSION
 import lightswitch.DRM_MODE_PAGE_FLIP_EVENT
 import lightswitch.GL_COLOR_BUFFER_BIT
@@ -103,7 +104,7 @@ fun main() = closeFinallyScope {
 		val drm = Drm.initialize(RENDER_DEVICE).useInScope()
 		val gbm = Gbm.initialize(drm).useInScope()
 		val egl = Egl.initialize(gbm).useInScope()
-		val emberHost = EmberHost(EMBER_HOST_UDS)
+		val emberHost = runBlocking { EmberHost.initialize(EMBER_HOST_UDS) }
 
 		val width: Int
 		val height: Int
