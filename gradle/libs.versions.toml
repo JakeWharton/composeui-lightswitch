@@ -13,7 +13,7 @@ jetbrains-compose-material3 = "org.jetbrains.compose.material3:material3:0.0.0-S
 
 skiko = "org.jetbrains.skiko:skiko-linuxarm64:0.0.0-SNAPSHOT"
 
-ktor-network = "io.ktor:ktor-network:3.0.0-beta-2-SNAPSHOT"
+ktor-network = "io.ktor:ktor-network:3.0.0"
 
 spotless-gradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:6.25.0"
 
