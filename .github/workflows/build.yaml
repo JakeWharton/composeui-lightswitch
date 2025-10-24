@@ -19,13 +19,13 @@ jobs:
 
       - run: ./gradlew build
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: composeui-lightswitch-debug.kexe
           path: build/bin/linuxArm64/debugExecutable/composeui-lightswitch.kexe
           if-no-files-found: error
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: composeui-lightswitch-release.kexe
           path: build/bin/linuxArm64/releaseExecutable/composeui-lightswitch.kexe
