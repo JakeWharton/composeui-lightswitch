@@ -18,6 +18,6 @@ ktor-network = "io.ktor:ktor-network:3.0.0-beta-2-SNAPSHOT"
 spotless-gradlePlugin = "com.diffplug.spotless:spotless-plugin-gradle:8.1.0"
 
 ktlint-core = "com.pinterest.ktlint:ktlint-cli:1.7.1"
-ktlint-composeRules = "io.nlopez.compose.rules:ktlint:0.4.27"
+ktlint-composeRules = "io.nlopez.compose.rules:ktlint:0.4.28"
 
 assertk = "com.willowtreeapps.assertk:assertk:0.28.1"
