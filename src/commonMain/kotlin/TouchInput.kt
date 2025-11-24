@@ -40,11 +40,13 @@ internal class TouchInput(
 					ABS_MT_POSITION_X -> {
 						nextX = event.value
 					}
+
 					ABS_MT_POSITION_Y -> {
 						nextY = event.value
 					}
 				}
 			}
+
 			EV_KEY -> {
 				when (event.code.convert<Int>()) {
 					BTN_TOUCH -> {
@@ -56,6 +58,7 @@ internal class TouchInput(
 					}
 				}
 			}
+
 			EV_SYN -> {
 				when (event.code.convert<Int>()) {
 					0 -> {
